@@ -1,0 +1,465 @@
+---
+title: "Total Reads and Mapped Reads (TOP2B and P53)"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## **📌 Total Reads by Sample**
+### **Load Required Libraries**
+```{r libraries, echo=TRUE}
+# Load necessary R packages
+library(edgeR)
+library(limma)
+library(RColorBrewer)
+library(gridExtra)
+library(reshape2)
+library(data.table)
+library(tidyverse)
+library(scales)
+library(biomaRt)
+library(cowplot)
+library(ggrepel)
+library(corrplot)
+library(Hmisc)
+library(ggpubr)
+```
+
+## **📍 2. Load Data**
+```{r load-data, echo=TRUE, message=FALSE}
+align<-read.csv("data/ChIP Seq Summary stat TOP2B P53.csv")
+
+map<-data.frame(align)
+
+map$Treatment<- factor(map$Treatment, levels = c("VEH_TOP2B", "DOX_TOP2B", "VEH_p53", "DOX_p53", "VEH_Input_P53", "DOX_Input_P53"))
+```
+
+## **📍 3. Define Color Palettes**
+```{r define-colors, echo=TRUE}
+drug_palc <- c("#8B006D","#DF707E","#F1B72B", "#3386DD","#707031","#41B333")
+
+Ind_palc <- c("#ffbe0b","#ff006e","#fb5607", "#8338ec","#3a86ff","#4a4e69")
+
+Treat_palc <- c("#ffbe0b","#ff006e","#fb5607", "#8338ec", "#800080","#FFC0CB")
+
+Map_palc <- c("#9b19f5","#e6d800", "#b3d4ff")
+
+Combined_palc <- c("#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF","#FFA500","#800080","#FFC0CB","#A52A2A","#808080","#FFD700")
+
+Type_palc <- c("#800080","#FFD700")
+```
+
+## **📍 4. Prepare Data**
+```{r prepare-data, echo=TRUE}
+# Factor Sample_name to maintain order
+map$Sample.Det<-factor(map$Sample.Det,levels = map$Sample.Det)
+```
+
+## **📍 5. Plot Total Reads by Sample**
+```{r plot-total-reads, echo=TRUE, message=FALSE, warning=FALSE,fig.height=8,fig.width=18}
+map %>%
+  #mutate(Drug=factor(Drug,levels=c("CX-5461","DOX","VEH"))) %>%
+  #mutate(Conc.=factor(Conc.,levels=c("0.1","0.5"))) %>%
+  #mutate(Time=factor(Time,levels=c("3","24","48"))) %>%
+  #group_by(Drug,Conc.,Time) %>%
+  ggplot(., aes (x =Sample.Det, y=Total.Reads..before.trimming., fill = Ind))+
+  geom_col()+
+  #geom_hline(aes(yintercept=20000000))+
+  scale_fill_manual(values=Ind_palc)+
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6))+
+  ggtitle(expression("Total number of reads by sample"))+
+  xlab("")+
+  ylab(expression("ChIP -sequencing reads"))+
+  theme_bw()+
+  theme(plot.title = element_text(size = rel(2), hjust = 0.5),
+        axis.title = element_text(size = 15, color = "black"),
+        axis.ticks = element_line(linewidth = 1.5),
+        axis.line = element_line(linewidth = 1.5),
+        axis.text.y = element_text(size =10, color = "black", angle = 0, hjust = 0.8, vjust = 0.5),
+        axis.text.x = element_text(size =10, color = "black", angle = 90, hjust = 1, vjust = 0.2),
+        #strip.text.x = element_text(size = 15, color = "black", face = "bold"),
+        strip.text.y = element_text(color = "white"))
+```
+
+## **📌 Total Reads by Individuals**
+
+```{r generate_boxplot indv, echo=TRUE, message=FALSE}
+map %>%
+  ggplot(aes(x = Ind, y = Total.Reads..before.trimming., fill = Ind)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Ind_palc) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6),
+                     limits = c(0, NA)) +
+  ggtitle(expression("Total number of reads by Individual")) +
+  xlab("") +
+  ylab(expression("ChIP -sequencing reads")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+
+```
+
+## **📌 Total Reads by Treatment**
+```{r generate_boxplot treatment, echo=TRUE, message=FALSE}
+map %>%
+  ggplot(aes(x = Treatment, y = Total.Reads..before.trimming., fill = Treatment)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Treat_palc) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6),
+                     limits = c(0, NA)) +
+  ggtitle(expression("Total number of reads by Treatment")) +
+  xlab("") +
+  ylab(expression("ChIP -sequencing reads")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+```
+
+## **📌 Total Reads by Sample type**
+```{r generate_boxplot type, echo=TRUE, message=FALSE}
+
+map %>%
+  ggplot(aes(x = Type, y = Total.Reads..before.trimming., fill = Type)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Type_palc) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6),
+                     limits = c(0, NA)) +
+  ggtitle(expression("Total number of reads by Sample Type")) +
+  xlab("") +
+  ylab(expression("ChIP -sequencing reads")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+```
+
+## **📌 Total Reads by Individuals and Sample type**
+```{r generate_boxplot Ind and type, echo=TRUE, message=FALSE}
+map %>%
+  ggplot(aes(x = Ind, y = Total.Reads..before.trimming., fill = Type)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Type_palc) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6),
+                     limits = c(0, NA)) +
+  ggtitle(expression("Total number of reads by Individual and Sample Type")) +
+  xlab("") +
+  ylab(expression("ChIP -sequencing reads")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+```
+
+## **📌 Number of reads before and after trimming**
+```{r plot trimmed reads, echo=TRUE, message=FALSE, warning=FALSE,fig.height=8,fig.width=18}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# Keep sample order as in file
+map$Sample.Det <- factor(map$Sample.Det, levels = map$Sample.Det)
+
+# Make sure read counts are numeric (in case CSV parsed as character)
+map <- map %>%
+  mutate(
+    `Total.Reads..before.trimming.` = as.numeric(`Total.Reads..before.trimming.`),
+    `Total.reads..after.Trimming.`  = as.numeric(`Total.reads..after.Trimming.`)
+  )
+
+# Compute kept fraction for annotation
+map <- map %>%
+  mutate(kept_frac = `Total.reads..after.Trimming.` / `Total.Reads..before.trimming.`)
+
+# Long format for before vs after
+map_long <- map %>%
+  pivot_longer(
+    cols = c(`Total.Reads..before.trimming.`, `Total.reads..after.Trimming.`),
+    names_to = "TrimStage", values_to = "Reads"
+  ) %>%
+  mutate(
+    TrimStage = factor(
+      TrimStage,
+      levels = c("Total.Reads..before.trimming.", "Total.reads..after.Trimming."),
+      labels = c("Before trimming", "After trimming")
+    )
+  )
+
+# High-contrast (colorblind-safe) colors
+stage_colors <- c("Before trimming" = "#1f78b4",  # deep blue
+                  "After trimming"  = "#ff7f00")  # bright orange
+
+# Base plot
+p <- ggplot(map_long, aes(x = Sample.Det, y = Reads, fill = TrimStage)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.75, color = "black") +
+  scale_fill_manual(values = stage_colors) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  ggtitle(expression("Total number of reads by sample: before vs after trimming")) +
+  xlab("") +
+  ylab(expression("ChIP-sequencing reads")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90, hjust = 1, vjust = 0.2),
+    legend.title = element_blank()
+  )
+p
+```
+
+## **📌 Mean Sequencing Reads Before and After Trimming by Individual, Sample Type, and Antibody**
+```{r plot mean reads, echo=TRUE, message=FALSE, warning=FALSE,fig.height=12,fig.width=18}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(stringr)
+
+# --- Prep -------------------------------------------------------------
+
+# Use your existing data frame name: map (change to df if needed)
+df <- map
+
+# Ensure required columns exist / are numeric
+df <- df %>%
+  mutate(
+    `Total.Reads..before.trimming.` = as.numeric(`Total.Reads..before.trimming.`),
+    `Total.reads..after.Trimming.`  = as.numeric(`Total.reads..after.Trimming.`)
+  )
+
+# Define Tx if your data uses 'Treatment'
+if (!"Tx" %in% names(df) && "Treatment" %in% names(df)) {
+  df <- df %>% mutate(Tx = Treatment)
+}
+
+# Normalize factors you care about
+df <- df %>%
+  mutate(
+    Ab   = ifelse(is.na(Ab) | Ab == "", "Input", as.character(Ab)),
+    Type = factor(Type, levels = c("ChIP_DNA", "Input_DNA"))  # adjust if your labels differ
+  )
+
+# Helper: label function for Y axis (millions)
+reads_lab <- label_number(suffix = " M", scale = 1e-6)
+
+# Kept fraction (After / Before)
+df <- df %>%
+  mutate(kept_frac = `Total.reads..after.Trimming.` / `Total.Reads..before.trimming.`)
+
+# --- Group, summarise, pivot -----------------------------------------
+
+group_sum <- df %>%
+  group_by(Ind, Type, Ab, Tx) %>%
+  summarise(
+    before_mean = mean(`Total.Reads..before.trimming.`, na.rm = TRUE),
+    after_mean  = mean(`Total.reads..after.Trimming.`,  na.rm = TRUE),
+    kept_pct    = 100 * mean(kept_frac, na.rm = TRUE),
+    .groups     = "drop"
+  ) %>%
+  pivot_longer(
+    cols      = c(before_mean, after_mean),
+    names_to  = "stage",
+    values_to = "reads"
+  ) %>%
+  mutate(
+    stage = factor(stage, levels = c("before_mean", "after_mean"),
+                          labels = c("Before", "After")),
+    facet_id = paste0(Ind, "_", Type, "_", Ab)
+  )
+
+# Order facets by Ind then Type (cleaner viewing)
+facet_levels <- group_sum %>%
+  distinct(Ind, Type, Ab, facet_id) %>%
+  arrange(Ind, Type, Ab) %>%
+  pull(facet_id)
+
+group_sum <- group_sum %>%
+  mutate(facet_id = factor(facet_id, levels = facet_levels))
+
+# Optional: prettier strip labels (multi-line)
+strip_labeller <- function(ids) {
+  parts <- str_split(ids, "_", n = 3, simplify = TRUE)
+  paste0("Ind: ", parts[,1], "\nType: ", parts[,2], "\nAb: ", parts[,3])
+}
+
+# Colors for Before / After
+before_after_colors <- c("Before" = "#1f78b4", "After" = "#ff7f00")
+
+# --- Plot -------------------------------------------------------------
+
+p_group <- ggplot(group_sum, aes(x = Tx, y = reads, fill = stage)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7, color = "black") +
+  scale_fill_manual(values = before_after_colors) +
+  facet_wrap(~ facet_id, scales = "free_y",
+             labeller = labeller(facet_id = strip_labeller)) +
+  scale_y_continuous(labels = reads_lab) +
+  labs(
+    x = "Treatment",
+    y = "Mean reads",
+    title = "Mean reads by Individual × Sample Type × Antibody"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    legend.title = element_blank(),
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    strip.text  = element_text(size = 10)
+  )
+
+p_group
+
+```
+
+
+## **📌 Duplication percentage by Sample**
+```{r Dup, echo=TRUE, message=FALSE, warning=FALSE,fig.height=8,fig.width=18}
+map %>%
+  ggplot(aes(x = Sample.Det, y = Duplication.percentage, fill = Ind)) +
+  geom_col(color = "black") +
+  scale_fill_manual(values = Ind_palc) +
+  scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) +
+  ggtitle(expression("Duplication Percentage by Sample")) +
+  xlab("") +
+  ylab(expression("Duplication percentage")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+```
+
+## **📌 Duplication percentage by Individual**
+```{r Dup1, echo=TRUE, message=FALSE, warning=FALSE}
+
+map %>%
+  ggplot(aes(x = Ind, y = Duplication.percentage, fill = Ind)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Ind_palc) +
+  scale_y_continuous(limits = c(0, 100), labels = function(x) paste0(x, "%")) +
+  ggtitle(expression("Duplication percentage by Individual")) +
+  xlab("") +
+  ylab(expression("Duplication percentage")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+```
+
+## **📌 Duplication percentage by Treatment**
+```{r Dup2, echo=TRUE, message=FALSE, warning=FALSE}
+map %>%
+  ggplot(aes(x = Treatment, y = Duplication.percentage, fill = Treatment)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Treat_palc) +
+  scale_y_continuous(limits = c(0, 100), labels = function(x) paste0(x, "%")) +
+  ggtitle(expression("Duplication percentage by Treatment")) +
+  xlab("") +
+  ylab(expression("Duplication percentage")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+
+```
+
+
+## **📌 Duplication percentage by Sample type**
+```{r Dup3, echo=TRUE, message=FALSE, warning=FALSE}
+map %>%
+  ggplot(aes(x = Type, y = Duplication.percentage, fill = Type)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Type_palc) +
+  scale_y_continuous(limits = c(0, 100), labels = function(x) paste0(x, "%")) +
+  ggtitle(expression("Duplication percentage by Sample Type")) +
+  xlab("") +
+  ylab(expression("Duplication percentage")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+
+```
+
+
+## **📌 Duplication percentage by Individual and Sample type**
+```{r Dup4, echo=TRUE, message=FALSE, warning=FALSE}
+map %>%
+  ggplot(aes(x = Ind, y = Duplication.percentage, fill = Type)) +
+  geom_boxplot() +
+  scale_fill_manual(values = Type_palc) +
+  scale_y_continuous(limits = c(0, 100), labels = function(x) paste0(x, "%")) +
+  ggtitle(expression("Duplication percentage by Individual and Sample Type")) +
+  xlab("") +
+  ylab(expression("Duplication percentage")) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.5),
+    axis.line   = element_line(linewidth = 1.5),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90,
+                               hjust = 1, vjust = 0.2),
+    strip.text.y = element_text(color = "white")
+  )
+```

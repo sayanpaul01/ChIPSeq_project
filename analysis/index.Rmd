@@ -13,3 +13,7 @@ Welcome to my research website.
 ### **Cardiomyocyte Purity**  
 
 - **[Cardiomyocyte Purity](https://sayanpaul01.github.io/ChIPSeq_project/Flow.html)**
+
+
+### **QC Data**
+- **[Total Reads, trimming, duplication and mapping (TOP2B and P53)](https://sayanpaul01.github.io/ChIPSeq_project/Total_Reads_and_Mapped_Reads_TOP2B_P53.html)**

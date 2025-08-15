@@ -11,7 +11,8 @@ navbar:
     - text: License
       href: license.html
   right:
-    - text: "Source (GitHub)"
+    - text: " GitHub"
+      icon: fa-github
       href: https://github.com/sayanpaul01/ChIPSeq_project
       target: _blank
 

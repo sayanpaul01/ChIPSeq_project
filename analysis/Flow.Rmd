@@ -1,0 +1,42 @@
+---
+title: "CM Purity"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## **📌 iPSC-CM Purity analysis**
+```{r CM purity, echo=TRUE, message=FALSE}
+# Load libraries
+library(ggplot2)
+
+# Updated data
+purity_data <- data.frame(
+  Individual = factor(c("Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6"),
+                      levels = c("Ind 1", "Ind 2", "Ind 3", "Ind 4", "Ind 5", "Ind 6")),
+  Purity = c(98.1, 96.0, 94.2, 98.3, 98.0, 98.8)
+)
+
+# Colors matching your original figure
+bar_colors <- c("#FDBE02", "#F50670", "#FB5403", "#933BEB", "#3E97FD", "#3A3F52")
+
+# Plot
+ggplot(purity_data, aes(x = Individual, y = Purity, fill = Individual)) +
+  geom_bar(stat = "identity", width = 0.8, color = "black") +
+  scale_fill_manual(values = bar_colors) +
+  labs(title = "Cardiomyocyte Purity (Flow Cytometry)",
+       x = "Individual", y = "CM Purity (%)") +
+  theme_minimal(base_family = "Arial") +
+  theme(
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 14, face = "bold"),
+    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.position = "none",
+    panel.grid.major = element_line(color = "gray70", size = 0.5),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1.2),
+    axis.line = element_blank()
+  ) +
+  ylim(0, 105)
+```

@@ -366,7 +366,7 @@ P53)</h1>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -377,8 +377,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -391,9 +391,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>ChIPSeq_project/</code> <span
@@ -416,21 +416,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -521,15 +518,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreed0f4698ff6a03049ec7d39a2c6c3b3912687368etargetblankd0f4698a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreeffe6f2445cd7c5bb4c92b542721b63c177be7fc6targetblankffe6f24a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/d0f4698ff6a03049ec7d39a2c6c3b3912687368e" target="_blank">d0f4698</a>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6" target="_blank">ffe6f24</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreed0f4698ff6a03049ec7d39a2c6c3b3912687368etargetblankd0f4698a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreeffe6f2445cd7c5bb4c92b542721b63c177be7fc6targetblankffe6f24a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -539,7 +536,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/d0f4698ff6a03049ec7d39a2c6c3b3912687368e" target="_blank">d0f4698</a>.
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6" target="_blank">ffe6f24</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -556,12 +553,6 @@ were generated:
 Ignored files:
     Ignored:    .Rproj.user/
 
-Untracked files:
-    Untracked:  analysis/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd
-    Untracked:  data/ChIP Seq Summary stat CTCF RAD21.csv
-    Untracked:  data/ChIP Seq Summary stat TOP2B P53.csv
-    Untracked:  plots_reads_comparison/
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not
@@ -575,10 +566,75 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown
+(<code>analysis/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd</code>) and
+HTML (<code>docs/Total_Reads_and_Mapped_Reads_TOP2B_P53.html</code>)
+files. If you’ve configured a remote Git repository (see
+<code>?wflow_git_remote</code>), click on the hyperlinks in the table
+below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/analysis/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+<td>
+Commit
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/sayanpaul01/ChIPSeq_project/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/Total_Reads_and_Mapped_Reads_TOP2B_P53.html" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+<td>
+Commit
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -738,6 +794,43 @@ map$Sample.Det&lt;-factor(map$Sample.Det,levels = map$Sample.Det)</code></pre>
         #strip.text.x = element_text(size = 15, color = &quot;black&quot;, face = &quot;bold&quot;),
         strip.text.y = element_text(color = &quot;white&quot;))</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/plot-total-reads-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-plot-total-reads-1">
+Past versions of plot-total-reads-1.png
+</button>
+</p>
+<div id="fig-plot-total-reads-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/plot-total-reads-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="total-reads-by-individuals" class="section level2">
 <h2><strong>📌 Total Reads by Individuals</strong></h2>
@@ -762,6 +855,43 @@ map$Sample.Det&lt;-factor(map$Sample.Det,levels = map$Sample.Det)</code></pre>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot%20indv-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-generate_boxplot-indv-1">
+Past versions of "generate_boxplot indv-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-generate_boxplot-indv-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot indv-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="total-reads-by-treatment" class="section level2">
 <h2><strong>📌 Total Reads by Treatment</strong></h2>
@@ -786,6 +916,43 @@ map$Sample.Det&lt;-factor(map$Sample.Det,levels = map$Sample.Det)</code></pre>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot%20treatment-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-generate_boxplot-treatment-1">
+Past versions of "generate_boxplot treatment-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-generate_boxplot-treatment-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot treatment-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="total-reads-by-sample-type" class="section level2">
 <h2><strong>📌 Total Reads by Sample type</strong></h2>
@@ -810,6 +977,43 @@ map$Sample.Det&lt;-factor(map$Sample.Det,levels = map$Sample.Det)</code></pre>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot%20type-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-generate_boxplot-type-1">
+Past versions of "generate_boxplot type-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-generate_boxplot-type-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot type-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="total-reads-by-individuals-and-sample-type"
 class="section level2">
@@ -835,6 +1039,44 @@ class="section level2">
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot%20Ind%20and%20type-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-generate_boxplot-Ind-and-type-1">
+Past versions of "generate_boxplot Ind and type-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-generate_boxplot-Ind-and-type-1"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/generate_boxplot Ind and type-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="number-of-reads-before-and-after-trimming"
 class="section level2">
@@ -896,6 +1138,43 @@ p &lt;- ggplot(map_long, aes(x = Sample.Det, y = Reads, fill = TrimStage)) +
   )
 p</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/plot%20trimmed%20reads-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-plot-trimmed-reads-1">
+Past versions of "plot trimmed reads-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-plot-trimmed-reads-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/plot trimmed reads-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div
 id="mean-sequencing-reads-before-and-after-trimming-by-individual-sample-type-and-antibody"
@@ -1000,6 +1279,43 @@ p_group &lt;- ggplot(group_sum, aes(x = Tx, y = reads, fill = stage)) +
 
 p_group</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/plot%20mean%20reads-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-plot-mean-reads-1">
+Past versions of "plot mean reads-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-plot-mean-reads-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/plot mean reads-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="duplication-percentage-by-sample" class="section level2">
 <h2><strong>📌 Duplication percentage by Sample</strong></h2>
@@ -1023,6 +1339,43 @@ p_group</code></pre>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-Dup-1">
+Past versions of Dup-1.png
+</button>
+</p>
+<div id="fig-Dup-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="duplication-percentage-by-individual" class="section level2">
 <h2><strong>📌 Duplication percentage by Individual</strong></h2>
@@ -1046,6 +1399,43 @@ p_group</code></pre>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-Dup1-1">
+Past versions of Dup1-1.png
+</button>
+</p>
+<div id="fig-Dup1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup1-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="duplication-percentage-by-treatment" class="section level2">
 <h2><strong>📌 Duplication percentage by Treatment</strong></h2>
@@ -1069,6 +1459,43 @@ p_group</code></pre>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-Dup2-1">
+Past versions of Dup2-1.png
+</button>
+</p>
+<div id="fig-Dup2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup2-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="duplication-percentage-by-sample-type" class="section level2">
 <h2><strong>📌 Duplication percentage by Sample type</strong></h2>
@@ -1092,6 +1519,43 @@ p_group</code></pre>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-Dup3-1">
+Past versions of Dup3-1.png
+</button>
+</p>
+<div id="fig-Dup3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup3-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="duplication-percentage-by-individual-and-sample-type"
 class="section level2">
@@ -1117,6 +1581,43 @@ type</strong></h2>
     strip.text.y = element_text(color = &quot;white&quot;)
   )</code></pre>
 <p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-Dup4-1">
+Past versions of Dup4-1.png
+</button>
+</p>
+<div id="fig-Dup4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/ffe6f2445cd7c5bb4c92b542721b63c177be7fc6/docs/figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/Dup4-1.png" target="_blank">ffe6f24</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-15
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1175,19 +1676,19 @@ loaded via a namespace (and not attached):
 [52] Biobase_2.62.0          withr_3.0.2             KEGGREST_1.42.0        
 [55] evaluate_1.0.3          foreign_0.8-90          BiocFileCache_2.10.2   
 [58] xml2_1.3.8              Biostrings_2.70.3       pillar_1.10.2          
-[61] filelock_1.0.3          carData_3.0-5           checkmate_2.3.2        
-[64] stats4_4.3.0            generics_0.1.3          rprojroot_2.0.4        
-[67] RCurl_1.98-1.17         S4Vectors_0.40.2        hms_1.1.3              
-[70] munsell_0.5.1           glue_1.7.0              tools_4.3.0            
-[73] ggsignif_0.6.4          locfit_1.5-9.12         fs_1.6.3               
-[76] XML_3.99-0.18           grid_4.3.0              AnnotationDbi_1.64.1   
-[79] colorspace_2.1-0        GenomeInfoDbData_1.2.11 htmlTable_2.4.3        
-[82] Formula_1.2-5           cli_3.6.1               rappdirs_0.3.3         
-[85] workflowr_1.7.1         gtable_0.3.6            rstatix_0.7.2          
-[88] sass_0.4.10             digest_0.6.34           BiocGenerics_0.48.1    
-[91] farver_2.1.2            htmlwidgets_1.6.4       memoise_2.0.1          
-[94] htmltools_0.5.8.1       lifecycle_1.0.4         httr_1.4.7             
-[97] statmod_1.5.0           bit64_4.6.0-1          </code></pre>
+[61] filelock_1.0.3          carData_3.0-5           whisker_0.4.1          
+[64] checkmate_2.3.2         stats4_4.3.0            generics_0.1.3         
+[67] rprojroot_2.0.4         RCurl_1.98-1.17         S4Vectors_0.40.2       
+[70] hms_1.1.3               munsell_0.5.1           glue_1.7.0             
+[73] tools_4.3.0             ggsignif_0.6.4          locfit_1.5-9.12        
+[76] fs_1.6.3                XML_3.99-0.18           grid_4.3.0             
+[79] AnnotationDbi_1.64.1    colorspace_2.1-0        GenomeInfoDbData_1.2.11
+[82] htmlTable_2.4.3         Formula_1.2-5           cli_3.6.1              
+[85] rappdirs_0.3.3          workflowr_1.7.1         gtable_0.3.6           
+[88] rstatix_0.7.2           sass_0.4.10             digest_0.6.34          
+[91] BiocGenerics_0.48.1     farver_2.1.2            htmlwidgets_1.6.4      
+[94] memoise_2.0.1           htmltools_0.5.8.1       lifecycle_1.0.4        
+[97] httr_1.4.7              statmod_1.5.0           bit64_4.6.0-1          </code></pre>
 </div>
 </div>
 

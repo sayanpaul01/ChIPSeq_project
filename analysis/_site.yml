@@ -1,17 +1,26 @@
 name: "ChIPSeq_project"
 output_dir: ../docs
+
 navbar:
   title: "ChIPSeq_project"
   left:
-  - text: Home
-    href: index.html
-  - text: About
-    href: about.html
-  - text: License
-    href: license.html
+    - text: Home
+      href: index.html
+    - text: About
+      href: about.html
+    - text: License
+      href: license.html
+  right:
+    - icon: fa-github
+      href: https://github.com/sayanpaul01/ChIPSeq_project
+      aria-label: "GitHub repository"
+      # to open in a new tab:
+      # target: _blank
+
 output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
     theme: cosmo
     highlight: textmate
+

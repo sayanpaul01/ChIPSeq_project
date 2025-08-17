@@ -463,3 +463,212 @@ map %>%
     strip.text.y = element_text(color = "white")
   )
 ```
+
+
+## **📌 Mapping Summary**
+```{r mapping, echo=TRUE, message=FALSE, warning=FALSE, ,fig.height=8,fig.width=18}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# If not already done, read with check.names=TRUE so we have dot-style names
+# map <- read.csv("data/ChIP Seq Summary stat TOP2B P53.csv", check.names = TRUE)
+
+# Keep sample order as in the file
+map$Sample.Det <- factor(map$Sample.Det, levels = map$Sample.Det)
+
+# Ensure numeric (CSV can import as character)
+map <- map %>%
+  mutate(
+    Total.Reads..before.trimming. = as.numeric(Total.Reads..before.trimming.),
+    Total.reads..after.Trimming.  = as.numeric(Total.reads..after.Trimming.),
+    Mapped.Reads                  = as.numeric(Mapped.Reads),
+    Unmapped.reads                = as.numeric(Unmapped.reads)
+  )
+
+# Long format for the 4 metrics
+metric_order <- c("Total.Reads..before.trimming.",
+                  "Total.reads..after.Trimming.",
+                  "Mapped.Reads",
+                  "Unmapped.reads")
+
+map_long4 <- map %>%
+  dplyr::select(Sample.Det, all_of(metric_order)) %>%
+  pivot_longer(cols = all_of(metric_order), names_to = "Metric", values_to = "Reads") %>%
+  mutate(
+    Metric = factor(
+      Metric,
+      levels = metric_order,
+      labels = c("Before trimming", "After trimming", "Mapped reads", "Unmapped reads")
+    )
+  )
+
+
+# Colors (colorblind-friendly)
+metric_cols <- c(
+  "Before trimming" = "#1f78b4",  # blue
+  "After trimming"  = "#ff7f00",  # orange
+  "Mapped reads"    = "#33a02c",  # green
+  "Unmapped reads"  = "#6a737b"   # gray
+)
+
+# Plot: grouped bars per sample
+ggplot(map_long4, aes(x = Sample.Det, y = Reads, fill = Metric)) +
+  geom_col(position = position_dodge(width = 0.85), width = 0.72, color = "black") +
+  scale_fill_manual(values = metric_cols) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(
+    title = "Total reads per sample: Before vs After, Mapped vs Unmapped",
+    x = NULL,
+    y = "Reads"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = rel(2), hjust = 0.5),
+    axis.title  = element_text(size = 15, color = "black"),
+    axis.ticks  = element_line(linewidth = 1.2),
+    axis.line   = element_line(linewidth = 1.2),
+    axis.text.y = element_text(size = 10, color = "black"),
+    axis.text.x = element_text(size = 10, color = "black", angle = 90, hjust = 1, vjust = 0.2),
+    legend.title = element_blank()
+  )
+```
+
+## **📌 Total, mapped and unmapped reads by individual**
+```{r mapping1, echo=TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# Keep original dot-style names (assumes you read with check.names=TRUE)
+# map <- read.csv("data/ChIP Seq Summary stat TOP2B P53.csv", check.names = TRUE)
+
+# Make sure numeric
+map <- map %>%
+  mutate(
+    Total.Reads..before.trimming. = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                 = as.numeric(Mapped.Reads),
+    Unmapped.reads               = as.numeric(Unmapped.reads)
+  )
+
+comp_cols <- c(
+  "Total reads" = "#1f78b4",  # blue
+  "Mapped reads"    = "#33a02c",  # green
+  "Unmapped reads"  = "#6a737b"   # gray
+)
+
+
+# Long format for the 3 metrics
+metric_order  <- c("Total.Reads..before.trimming.", "Mapped.Reads", "Unmapped.reads")
+metric_labels <- c("Total reads", "Mapped reads", "Unmapped reads")
+
+map_long3 <- map %>%
+  pivot_longer(
+    cols = all_of(metric_order),
+    names_to = "Metric",
+    values_to = "Reads"
+  ) %>%
+  mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+
+ggplot(map_long3, aes(x = Ind, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = comp_cols) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(title = "Reads by Individual: Total, mapped and Unmapped",
+       x = NULL, y = "Reads") +
+  theme_bw() +
+  theme(plot.title = element_text(size = rel(1.8), hjust = 0.5),
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.2))
+```
+
+## **📌 Total, mapped and unmapped reads by treatment**
+```{r mapping2, echo=TRUE, message=FALSE, warning=FALSE}
+ggplot(map_long3, aes(x = Treatment, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = comp_cols) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(title = "Reads by Treatment: Total, mapped and Unmapped",
+       x = NULL, y = "Reads") +
+  theme_bw() +
+  theme(plot.title = element_text(size = rel(1.8), hjust = 0.5),
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.2))
+```
+
+## **📌 Total, mapped and unmapped reads by Sample type**
+```{r mapping3, echo=TRUE, message=FALSE, warning=FALSE}
+ggplot(map_long3, aes(x = Type, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = comp_cols) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(title = "Reads by Sample Type: Total, mapped and Unmapped",
+       x = NULL, y = "Reads") +
+  theme_bw() +
+  theme(plot.title = element_text(size = rel(1.8), hjust = 0.5),
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.2))
+```
+
+
+## **📌 Total, mapped and unmapped reads by individual and sample type**
+```{r mapping4, echo=TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# Make sure numeric
+map <- map %>%
+  mutate(
+    Total.Reads..before.trimming. = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                  = as.numeric(Mapped.Reads),
+    Unmapped.reads                = as.numeric(Unmapped.reads)
+  )
+
+# Colors for boxplot fill
+comp_cols <- c(
+  "Total reads" = "#1f78b4",  # blue
+  "Mapped reads"    = "#33a02c",  # green
+  "Unmapped reads"  = "#6a737b"   # gray
+)
+
+
+# Reshape into long format
+map_long <- map %>%
+  dplyr::select(Ind, Type,
+                Total.Reads..before.trimming., Mapped.Reads, Unmapped.reads) %>%
+  tidyr::pivot_longer(
+    cols = c(Total.Reads..before.trimming., Mapped.Reads, Unmapped.reads),
+    names_to = "Metric", values_to = "Reads"
+  ) %>%
+  dplyr::mutate(
+    Metric = factor(Metric,
+      levels = c("Total.Reads..before.trimming.", "Mapped.Reads", "Unmapped.reads"),
+      labels = c("Total reads", "Mapped reads", "Unmapped reads"))
+  )
+
+# ---- Plot ----
+ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
+  geom_boxplot(outlier.size = 0.8, position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = comp_cols) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  facet_wrap(~ Type) +
+  labs(
+    title = "Read mapping by Individual and Sample Type",
+    x = "Individual", y = "Reads"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.6), hjust = 0.5),
+    legend.title = element_blank(),
+    strip.text   = element_text(size = 11, face = "bold"),
+    axis.text.x  = element_text(angle = 90, hjust = 1, vjust = 0.2)
+  )
+```

@@ -671,3 +671,305 @@ ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
     axis.text.x  = element_text(angle = 90, hjust = 1, vjust = 0.2)
   )
 ```
+
+## **📌 Total, Mapped, Unmapped, and Deduplicated and uniquely mapped Reads per Sample**
+```{r dedup, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8,fig.width=18}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# ---- Load data (already read into "map") ----
+# If needed, uncomment the following line to read fresh:
+# map <- read.csv("data/ChIP Seq Summary stat TOP2B P53.csv", check.names = TRUE)
+
+# Convert to tibble for tidyverse
+map <- tibble::as_tibble(map)
+
+# Keep sample order as in the file
+map$Sample.Det <- factor(map$Sample.Det, levels = map$Sample.Det)
+
+# Ensure numeric for all metrics
+map <- map %>%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Total.reads..after.Trimming.               = as.numeric(Total.reads..after.Trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication),
+    Unmapped.reads                             = as.numeric(Unmapped.reads)
+  )
+
+# ---- Define order, labels, and colors ----
+metric_order <- c(
+  "Total.Reads..before.trimming.",
+  "Total.reads..after.Trimming.",
+  "Mapped.Reads",
+  "Reads.after.deduplication",
+  "Uniquely.mapped.reads.before.deduplication",
+  "Uniquely.mapped.reads.after.deduplication",
+  "Unmapped.reads"
+)
+
+metric_labels <- c(
+  "Total.Reads..before.trimming."              = "Before trimming",
+  "Total.reads..after.Trimming."               = "After trimming",
+  "Mapped.Reads"                               = "Mapped",
+  "Reads.after.deduplication"                  = "After deduplication",
+  "Uniquely.mapped.reads.before.deduplication" = "Uniquely mapped (pre-dedup)",
+  "Uniquely.mapped.reads.after.deduplication"  = "Uniquely mapped (post-dedup)",
+  "Unmapped.reads"                             = "Unmapped"
+)
+
+metric_colors <- c(
+  "Before trimming"              = "#1f78b4",  # blue
+  "After trimming"               = "#ff7f00",  # orange
+  "Mapped"                       = "#33a02c",  # green
+  "After deduplication"          = "#b15928",  # brown
+  "Uniquely mapped (pre-dedup)"  = "#6a3d9a",  # purple
+  "Uniquely mapped (post-dedup)" = "#e31a1c",  # red
+  "Unmapped"                     = "#6a737b"   # gray
+)
+
+# ---- Reshape to long format ----
+map_long <- map %>%
+  dplyr::select(Sample.Det, dplyr::all_of(metric_order)) %>%
+  tidyr::pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = "Metric", values_to = "Reads"
+  ) %>%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+
+# ---- Plot ----
+ggplot(map_long, aes(x = Sample.Det, y = Reads, fill = Metric)) +
+  geom_col(position = position_dodge(width = 0.9), width = 0.8, color = "black") +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(
+    title = "Read statistics per sample",
+    x = "Sample",
+    y = "Number of reads"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.6), hjust = 0.5),
+    axis.text.x  = element_text(size = 8, angle = 90, hjust = 1, vjust = 0.2),
+    legend.title = element_blank()
+  )
+```
+
+## **📌 Total, Mapped, Unmapped, and Deduplicated and uniquely mapped Reads per Individual**
+```{r dedup1, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=12}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# ---- Make sure numeric ----
+map <- map %>%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication)
+  )
+
+# ---- Define order, labels, and colors ----
+metric_order <- c(
+  "Total.Reads..before.trimming.",
+  "Mapped.Reads",
+  "Reads.after.deduplication",
+  "Uniquely.mapped.reads.before.deduplication",
+  "Uniquely.mapped.reads.after.deduplication"
+)
+
+metric_labels <- c(
+  "Total.Reads..before.trimming."              = "Total reads",
+  "Mapped.Reads"                               = "Mapped reads",
+  "Reads.after.deduplication"                  = "Deduplicated reads",
+  "Uniquely.mapped.reads.before.deduplication" = "Uniquely mapped (pre-dedup)",
+  "Uniquely.mapped.reads.after.deduplication"  = "Uniquely mapped (post-dedup)"
+)
+
+metric_colors <- c(
+  "Total reads"                  = "#1f78b4",  # blue
+  "Mapped reads"                 = "#33a02c",  # green
+  "Deduplicated reads"           = "#b15928",  # brown
+  "Uniquely mapped (pre-dedup)"  = "#6a3d9a",  # purple
+  "Uniquely mapped (post-dedup)" = "#e31a1c"   # red
+)
+
+# ---- Reshape to long format ----
+map_long <- map %>%
+  dplyr::select(Ind, dplyr::all_of(metric_order)) %>%
+  tidyr::pivot_longer(cols = dplyr::all_of(metric_order),
+               names_to = "Metric", values_to = "Reads") %>%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+# ---- Plot ----
+ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(
+    title = "Read statistics by Individual",
+    x = "Individual",
+    y = "Number of reads"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.6), hjust = 0.5),
+    legend.title = element_blank(),
+    axis.text.x  = element_text(size = 10, angle = 45, hjust = 1)
+  )
+```
+
+## **📌 Total, Mapped, Unmapped, and Deduplicated and uniquely mapped Reads per treatment**
+```{r dedup2, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=12}
+
+# ---- Long format ----
+map_long_tx <- map %>%
+  dplyr::select(Treatment, dplyr::all_of(metric_order)) %>%
+  tidyr::pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = "Metric", values_to = "Reads"
+  ) %>%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+# ---- Plot ----
+ggplot(map_long_tx, aes(x = Treatment, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(
+    title = "Reads by Treatment: Total, Mapped, Deduplicated, and Uniquely Mapped",
+    x = NULL, y = "Reads"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.8), hjust = 0.5),
+    legend.title = element_blank(),
+    axis.text.x  = element_text(angle = 90, hjust = 1, vjust = 0.2)
+  )
+```
+
+## **📌 Total, Mapped, Unmapped, and Deduplicated and uniquely mapped Reads per sample type**
+```{r dedup3, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=12}
+# ---- Long format by Sample Type ----
+map_long_type <- map %>%
+  dplyr::select(Type, dplyr::all_of(metric_order)) %>%
+  tidyr::pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = "Metric", values_to = "Reads"
+  ) %>%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+# ---- Plot ----
+ggplot(map_long_type, aes(x = Type, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  labs(
+    title = "Reads by Sample Type: Total, Mapped, Deduplicated, and Uniquely Mapped",
+    x = NULL, y = "Reads"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.8), hjust = 0.5),
+    legend.title = element_blank(),
+    axis.text.x  = element_text(angle = 0, hjust = 0.5, vjust = 0.5, size = 11)
+  )
+```
+
+## **📌 Total, Mapped, Unmapped, and Deduplicated and uniquely mapped Reads per sample type and individuals**
+```{r dedup4, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=14}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# Make sure numeric
+map <- map %>%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication)
+  )
+
+# Colors for boxplot fill (5 metrics)
+comp_cols <- c(
+  "Total reads"                  = "#1f78b4",  # blue
+  "Mapped reads"                 = "#33a02c",  # green
+  "Deduplicated reads"           = "#b15928",  # brown
+  "Uniquely mapped (pre-dedup)"  = "#6a3d9a",  # purple
+  "Uniquely mapped (post-dedup)" = "#e31a1c"   # red
+)
+
+# Reshape into long format
+map_long <- map %>%
+  dplyr::select(
+    Ind, Type,
+    Total.Reads..before.trimming., Mapped.Reads,
+    Reads.after.deduplication,
+    Uniquely.mapped.reads.before.deduplication,
+    Uniquely.mapped.reads.after.deduplication
+  ) %>%
+  tidyr::pivot_longer(
+    cols = c(
+      Total.Reads..before.trimming., Mapped.Reads,
+      Reads.after.deduplication,
+      Uniquely.mapped.reads.before.deduplication,
+      Uniquely.mapped.reads.after.deduplication
+    ),
+    names_to = "Metric", values_to = "Reads"
+  ) %>%
+  dplyr::mutate(
+    Metric = factor(
+      Metric,
+      levels = c(
+        "Total.Reads..before.trimming.", "Mapped.Reads",
+        "Reads.after.deduplication",
+        "Uniquely.mapped.reads.before.deduplication",
+        "Uniquely.mapped.reads.after.deduplication"
+      ),
+      labels = c(
+        "Total reads", "Mapped reads",
+        "Deduplicated reads",
+        "Uniquely mapped (pre-dedup)",
+        "Uniquely mapped (post-dedup)"
+      )
+    )
+  )
+
+# ---- Plot (same style as yours) ----
+ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
+  geom_boxplot(outlier.size = 0.8, position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = comp_cols) +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  facet_wrap(~ Type) +
+  labs(
+    title = "Read statistics by Individual and Sample Type",
+    x = "Individual", y = "Number of reads"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.6), hjust = 0.5),
+    legend.title = element_blank(),
+    strip.text   = element_text(size = 11, face = "bold"),
+    axis.text.x  = element_text(angle = 90, hjust = 1, vjust = 0.2)
+  )
+```

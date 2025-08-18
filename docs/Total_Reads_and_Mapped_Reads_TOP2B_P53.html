@@ -366,7 +366,7 @@ P53)</h1>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -377,8 +377,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -387,13 +387,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-08-17
+<strong>Last updated:</strong> 2025-08-18
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>ChIPSeq_project/</code> <span
@@ -416,18 +416,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -518,15 +521,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttree90183c30c7016f9b7a658962770e5b2927599c63targetblank90183c3a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreeaaaed7eea7db72cb69fae9b77077b24741d60c0etargetblankaaaed7ea">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/90183c30c7016f9b7a658962770e5b2927599c63" target="_blank">90183c3</a>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/aaaed7eea7db72cb69fae9b77077b24741d60c0e" target="_blank">aaaed7e</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttree90183c30c7016f9b7a658962770e5b2927599c63targetblank90183c3a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreeaaaed7eea7db72cb69fae9b77077b24741d60c0etargetblankaaaed7ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -536,7 +539,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/90183c30c7016f9b7a658962770e5b2927599c63" target="_blank">90183c3</a>.
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/aaaed7eea7db72cb69fae9b77077b24741d60c0e" target="_blank">aaaed7e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -553,6 +556,11 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Unstaged changes:
+    Modified:   analysis/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd
+    Modified:   data/ChIP Seq Summary stat CTCF RAD21.csv
+    Modified:   data/ChIP Seq Summary stat TOP2B P53.csv
 
 </code></pre>
 <p>
@@ -599,6 +607,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/sayanpaul01/ChIPSeq_project/aaaed7eea7db72cb69fae9b77077b24741d60c0e/docs/Total_Reads_and_Mapped_Reads_TOP2B_P53.html" target="_blank">aaaed7e</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-17
+</td>
+<td>
+Commit
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2069,6 +2094,321 @@ sayanpaul01
 </table>
 </div>
 </div>
+</div>
+<div
+id="total-mapped-unmapped-and-deduplicated-and-uniquely-mapped-reads-per-sample"
+class="section level2">
+<h2><strong>📌 Total, Mapped, Unmapped, and Deduplicated and uniquely
+mapped Reads per Sample</strong></h2>
+<pre class="r"><code>library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# ---- Load data (already read into &quot;map&quot;) ----
+# If needed, uncomment the following line to read fresh:
+# map &lt;- read.csv(&quot;data/ChIP Seq Summary stat TOP2B P53.csv&quot;, check.names = TRUE)
+
+# Convert to tibble for tidyverse
+map &lt;- tibble::as_tibble(map)
+
+# Keep sample order as in the file
+map$Sample.Det &lt;- factor(map$Sample.Det, levels = map$Sample.Det)
+
+# Ensure numeric for all metrics
+map &lt;- map %&gt;%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Total.reads..after.Trimming.               = as.numeric(Total.reads..after.Trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication),
+    Unmapped.reads                             = as.numeric(Unmapped.reads)
+  )
+
+# ---- Define order, labels, and colors ----
+metric_order &lt;- c(
+  &quot;Total.Reads..before.trimming.&quot;,
+  &quot;Total.reads..after.Trimming.&quot;,
+  &quot;Mapped.Reads&quot;,
+  &quot;Reads.after.deduplication&quot;,
+  &quot;Uniquely.mapped.reads.before.deduplication&quot;,
+  &quot;Uniquely.mapped.reads.after.deduplication&quot;,
+  &quot;Unmapped.reads&quot;
+)
+
+metric_labels &lt;- c(
+  &quot;Total.Reads..before.trimming.&quot;              = &quot;Before trimming&quot;,
+  &quot;Total.reads..after.Trimming.&quot;               = &quot;After trimming&quot;,
+  &quot;Mapped.Reads&quot;                               = &quot;Mapped&quot;,
+  &quot;Reads.after.deduplication&quot;                  = &quot;After deduplication&quot;,
+  &quot;Uniquely.mapped.reads.before.deduplication&quot; = &quot;Uniquely mapped (pre-dedup)&quot;,
+  &quot;Uniquely.mapped.reads.after.deduplication&quot;  = &quot;Uniquely mapped (post-dedup)&quot;,
+  &quot;Unmapped.reads&quot;                             = &quot;Unmapped&quot;
+)
+
+metric_colors &lt;- c(
+  &quot;Before trimming&quot;              = &quot;#1f78b4&quot;,  # blue
+  &quot;After trimming&quot;               = &quot;#ff7f00&quot;,  # orange
+  &quot;Mapped&quot;                       = &quot;#33a02c&quot;,  # green
+  &quot;After deduplication&quot;          = &quot;#b15928&quot;,  # brown
+  &quot;Uniquely mapped (pre-dedup)&quot;  = &quot;#6a3d9a&quot;,  # purple
+  &quot;Uniquely mapped (post-dedup)&quot; = &quot;#e31a1c&quot;,  # red
+  &quot;Unmapped&quot;                     = &quot;#6a737b&quot;   # gray
+)
+
+# ---- Reshape to long format ----
+map_long &lt;- map %&gt;%
+  dplyr::select(Sample.Det, dplyr::all_of(metric_order)) %&gt;%
+  tidyr::pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = &quot;Metric&quot;, values_to = &quot;Reads&quot;
+  ) %&gt;%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+
+# ---- Plot ----
+ggplot(map_long, aes(x = Sample.Det, y = Reads, fill = Metric)) +
+  geom_col(position = position_dodge(width = 0.9), width = 0.8, color = &quot;black&quot;) +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = &quot; M&quot;, scale = 1e-6)) +
+  labs(
+    title = &quot;Read statistics per sample&quot;,
+    x = &quot;Sample&quot;,
+    y = &quot;Number of reads&quot;
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.6), hjust = 0.5),
+    axis.text.x  = element_text(size = 8, angle = 90, hjust = 1, vjust = 0.2),
+    legend.title = element_blank()
+  )</code></pre>
+<p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/dedup-1.png" width="1728" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="total-mapped-unmapped-and-deduplicated-and-uniquely-mapped-reads-per-individual"
+class="section level2">
+<h2><strong>📌 Total, Mapped, Unmapped, and Deduplicated and uniquely
+mapped Reads per Individual</strong></h2>
+<pre class="r"><code>library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# ---- Make sure numeric ----
+map &lt;- map %&gt;%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication)
+  )
+
+# ---- Define order, labels, and colors ----
+metric_order &lt;- c(
+  &quot;Total.Reads..before.trimming.&quot;,
+  &quot;Mapped.Reads&quot;,
+  &quot;Reads.after.deduplication&quot;,
+  &quot;Uniquely.mapped.reads.before.deduplication&quot;,
+  &quot;Uniquely.mapped.reads.after.deduplication&quot;
+)
+
+metric_labels &lt;- c(
+  &quot;Total.Reads..before.trimming.&quot;              = &quot;Total reads&quot;,
+  &quot;Mapped.Reads&quot;                               = &quot;Mapped reads&quot;,
+  &quot;Reads.after.deduplication&quot;                  = &quot;Deduplicated reads&quot;,
+  &quot;Uniquely.mapped.reads.before.deduplication&quot; = &quot;Uniquely mapped (pre-dedup)&quot;,
+  &quot;Uniquely.mapped.reads.after.deduplication&quot;  = &quot;Uniquely mapped (post-dedup)&quot;
+)
+
+metric_colors &lt;- c(
+  &quot;Total reads&quot;                  = &quot;#1f78b4&quot;,  # blue
+  &quot;Mapped reads&quot;                 = &quot;#33a02c&quot;,  # green
+  &quot;Deduplicated reads&quot;           = &quot;#b15928&quot;,  # brown
+  &quot;Uniquely mapped (pre-dedup)&quot;  = &quot;#6a3d9a&quot;,  # purple
+  &quot;Uniquely mapped (post-dedup)&quot; = &quot;#e31a1c&quot;   # red
+)
+
+# ---- Reshape to long format ----
+map_long &lt;- map %&gt;%
+  dplyr::select(Ind, dplyr::all_of(metric_order)) %&gt;%
+  tidyr::pivot_longer(cols = dplyr::all_of(metric_order),
+               names_to = &quot;Metric&quot;, values_to = &quot;Reads&quot;) %&gt;%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+# ---- Plot ----
+ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = &quot; M&quot;, scale = 1e-6)) +
+  labs(
+    title = &quot;Read statistics by Individual&quot;,
+    x = &quot;Individual&quot;,
+    y = &quot;Number of reads&quot;
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.6), hjust = 0.5),
+    legend.title = element_blank(),
+    axis.text.x  = element_text(size = 10, angle = 45, hjust = 1)
+  )</code></pre>
+<p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/dedup1-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="total-mapped-unmapped-and-deduplicated-and-uniquely-mapped-reads-per-treatment"
+class="section level2">
+<h2><strong>📌 Total, Mapped, Unmapped, and Deduplicated and uniquely
+mapped Reads per treatment</strong></h2>
+<pre class="r"><code># ---- Long format ----
+map_long_tx &lt;- map %&gt;%
+  dplyr::select(Treatment, dplyr::all_of(metric_order)) %&gt;%
+  tidyr::pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = &quot;Metric&quot;, values_to = &quot;Reads&quot;
+  ) %&gt;%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+# ---- Plot ----
+ggplot(map_long_tx, aes(x = Treatment, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = &quot; M&quot;, scale = 1e-6)) +
+  labs(
+    title = &quot;Reads by Treatment: Total, Mapped, Deduplicated, and Uniquely Mapped&quot;,
+    x = NULL, y = &quot;Reads&quot;
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.8), hjust = 0.5),
+    legend.title = element_blank(),
+    axis.text.x  = element_text(angle = 90, hjust = 1, vjust = 0.2)
+  )</code></pre>
+<p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/dedup2-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="total-mapped-unmapped-and-deduplicated-and-uniquely-mapped-reads-per-sample-type"
+class="section level2">
+<h2><strong>📌 Total, Mapped, Unmapped, and Deduplicated and uniquely
+mapped Reads per sample type</strong></h2>
+<pre class="r"><code># ---- Long format by Sample Type ----
+map_long_type &lt;- map %&gt;%
+  dplyr::select(Type, dplyr::all_of(metric_order)) %&gt;%
+  tidyr::pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = &quot;Metric&quot;, values_to = &quot;Reads&quot;
+  ) %&gt;%
+  dplyr::mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels)
+  )
+
+# ---- Plot ----
+ggplot(map_long_type, aes(x = Type, y = Reads, fill = Metric)) +
+  geom_boxplot(position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = metric_colors) +
+  scale_y_continuous(labels = label_number(suffix = &quot; M&quot;, scale = 1e-6)) +
+  labs(
+    title = &quot;Reads by Sample Type: Total, Mapped, Deduplicated, and Uniquely Mapped&quot;,
+    x = NULL, y = &quot;Reads&quot;
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.8), hjust = 0.5),
+    legend.title = element_blank(),
+    axis.text.x  = element_text(angle = 0, hjust = 0.5, vjust = 0.5, size = 11)
+  )</code></pre>
+<p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/dedup3-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="total-mapped-unmapped-and-deduplicated-and-uniquely-mapped-reads-per-sample-type-and-individuals"
+class="section level2">
+<h2><strong>📌 Total, Mapped, Unmapped, and Deduplicated and uniquely
+mapped Reads per sample type and individuals</strong></h2>
+<pre class="r"><code>library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# Make sure numeric
+map &lt;- map %&gt;%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication)
+  )
+
+# Colors for boxplot fill (5 metrics)
+comp_cols &lt;- c(
+  &quot;Total reads&quot;                  = &quot;#1f78b4&quot;,  # blue
+  &quot;Mapped reads&quot;                 = &quot;#33a02c&quot;,  # green
+  &quot;Deduplicated reads&quot;           = &quot;#b15928&quot;,  # brown
+  &quot;Uniquely mapped (pre-dedup)&quot;  = &quot;#6a3d9a&quot;,  # purple
+  &quot;Uniquely mapped (post-dedup)&quot; = &quot;#e31a1c&quot;   # red
+)
+
+# Reshape into long format
+map_long &lt;- map %&gt;%
+  dplyr::select(
+    Ind, Type,
+    Total.Reads..before.trimming., Mapped.Reads,
+    Reads.after.deduplication,
+    Uniquely.mapped.reads.before.deduplication,
+    Uniquely.mapped.reads.after.deduplication
+  ) %&gt;%
+  tidyr::pivot_longer(
+    cols = c(
+      Total.Reads..before.trimming., Mapped.Reads,
+      Reads.after.deduplication,
+      Uniquely.mapped.reads.before.deduplication,
+      Uniquely.mapped.reads.after.deduplication
+    ),
+    names_to = &quot;Metric&quot;, values_to = &quot;Reads&quot;
+  ) %&gt;%
+  dplyr::mutate(
+    Metric = factor(
+      Metric,
+      levels = c(
+        &quot;Total.Reads..before.trimming.&quot;, &quot;Mapped.Reads&quot;,
+        &quot;Reads.after.deduplication&quot;,
+        &quot;Uniquely.mapped.reads.before.deduplication&quot;,
+        &quot;Uniquely.mapped.reads.after.deduplication&quot;
+      ),
+      labels = c(
+        &quot;Total reads&quot;, &quot;Mapped reads&quot;,
+        &quot;Deduplicated reads&quot;,
+        &quot;Uniquely mapped (pre-dedup)&quot;,
+        &quot;Uniquely mapped (post-dedup)&quot;
+      )
+    )
+  )
+
+# ---- Plot (same style as yours) ----
+ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
+  geom_boxplot(outlier.size = 0.8, position = position_dodge(width = 0.75)) +
+  scale_fill_manual(values = comp_cols) +
+  scale_y_continuous(labels = label_number(suffix = &quot; M&quot;, scale = 1e-6)) +
+  facet_wrap(~ Type) +
+  labs(
+    title = &quot;Read statistics by Individual and Sample Type&quot;,
+    x = &quot;Individual&quot;, y = &quot;Number of reads&quot;
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.6), hjust = 0.5),
+    legend.title = element_blank(),
+    strip.text   = element_text(size = 11, face = &quot;bold&quot;),
+    axis.text.x  = element_text(angle = 90, hjust = 1, vjust = 0.2)
+  )</code></pre>
+<p><img src="figure/Total_Reads_and_Mapped_Reads_TOP2B_P53.Rmd/dedup4-1.png" width="1344" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

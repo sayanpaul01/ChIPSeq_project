@@ -366,7 +366,7 @@ RAD21)</h1>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -377,8 +377,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -387,13 +387,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-08-18
+<strong>Last updated:</strong> 2025-08-19
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>ChIPSeq_project/</code> <span
@@ -416,18 +416,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -518,15 +521,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreeab9a1362c1fc0736af9a130a26128f60d09b71b5targetblankab9a136a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttree841c6326d78bc76867752f7ba507528774e0cf98targetblank841c632a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/ab9a1362c1fc0736af9a130a26128f60d09b71b5" target="_blank">ab9a136</a>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/841c6326d78bc76867752f7ba507528774e0cf98" target="_blank">841c632</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreeab9a1362c1fc0736af9a130a26128f60d09b71b5targetblankab9a136a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttree841c6326d78bc76867752f7ba507528774e0cf98targetblank841c632a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -536,7 +539,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/ab9a1362c1fc0736af9a130a26128f60d09b71b5" target="_blank">ab9a136</a>.
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/841c6326d78bc76867752f7ba507528774e0cf98" target="_blank">841c632</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -553,6 +556,11 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Unstaged changes:
+    Modified:   analysis/Total_Reads_and_Mapped_Reads_CTCF_RAD21.Rmd
+    Modified:   data/ChIP Seq Summary stat CTCF RAD21.csv
+    Modified:   data/ChIP Seq Summary stat TOP2B P53.csv
 
 </code></pre>
 <p>
@@ -599,6 +607,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/sayanpaul01/ChIPSeq_project/25ce453914b6bdbbeeb125ec3249281bbb3a679b/docs/Total_Reads_and_Mapped_Reads_CTCF_RAD21.html" target="_blank">25ce453</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-18
+</td>
+<td>
+Commit
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2586,6 +2611,92 @@ sayanpaul01
 </table>
 </div>
 </div>
+</div>
+<div id="comparison-of-veh-and-dox-reads-across-chip-and-input-samples"
+class="section level2">
+<h2><strong>📌 Comparison of VEH and DOX reads across ChIP and Input
+samples</strong></h2>
+<pre class="r"><code>library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# ---- Ensure numeric ----
+map &lt;- map %&gt;%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Nuclear.reads.before.dedup                 = as.numeric(Nuclear.reads.before.dedup),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication)
+  )
+
+# ---- Metric definitions ----
+metric_order &lt;- c(
+  &quot;Total.Reads..before.trimming.&quot;,
+  &quot;Mapped.Reads&quot;,
+  &quot;Reads.after.deduplication&quot;,
+  &quot;Uniquely.mapped.reads.before.deduplication&quot;,
+  &quot;Nuclear.reads.before.dedup&quot;,
+  &quot;Uniquely.mapped.reads.after.deduplication&quot;
+)
+
+metric_labels &lt;- c(
+  &quot;Total.Reads..before.trimming.&quot;              = &quot;total_reads&quot;,
+  &quot;Mapped.Reads&quot;                               = &quot;mapped_reads&quot;,
+  &quot;Reads.after.deduplication&quot;                  = &quot;dedup_reads&quot;,
+  &quot;Uniquely.mapped.reads.before.deduplication&quot; = &quot;unique_pre_dedup&quot;,
+  &quot;Nuclear.reads.before.dedup&quot;                 = &quot;nuclear_pre_dedup&quot;,
+  &quot;Uniquely.mapped.reads.after.deduplication&quot;  = &quot;unique_post_dedup&quot;
+)
+
+# ---- Reshape ----
+long5 &lt;- map %&gt;%
+  dplyr::select(Ind, Type, Treatment, dplyr::all_of(metric_order)) %&gt;%
+  pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = &quot;Metric&quot;, values_to = &quot;Reads&quot;
+  ) %&gt;%
+  mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels),
+    Ind    = factor(Ind, levels = sort(unique(Ind))),
+    Tx     = ifelse(grepl(&quot;^VEH&quot;, Treatment), &quot;VEH&quot;, &quot;DOX&quot;),
+    Tx     = factor(Tx, levels = c(&quot;VEH&quot;, &quot;DOX&quot;)),
+    # build clean facet names: e.g. VEH_TOP2B_ChIP
+    Facet  = paste(Tx, gsub(&quot;VEH_|DOX_&quot;, &quot;&quot;, Treatment), Type, sep = &quot;_&quot;),
+    Facet  = factor(Facet, levels = unique(paste(Tx, gsub(&quot;VEH_|DOX_&quot;, &quot;&quot;, Treatment), Type, sep = &quot;_&quot;)))
+  ) %&gt;%
+  droplevels()
+
+# ---- Colors ----
+Ind_palc &lt;- c(&quot;#ffbe0b&quot;,&quot;#ff006e&quot;,&quot;#fb5607&quot;,&quot;#8338ec&quot;,&quot;#3a86ff&quot;,&quot;#4a4e69&quot;)
+tx_cols  &lt;- c(&quot;VEH&quot; = &quot;#1f77b4&quot;, &quot;DOX&quot; = &quot;#d62728&quot;)
+
+# ---- Plot ----
+ggplot(long5, aes(x = Metric, y = Reads)) +
+  geom_boxplot(aes(fill = Tx),
+               color = &quot;black&quot;, width = 0.65, outlier.shape = NA,
+               position = position_dodge(width = 0.75)) +
+  geom_point(aes(color = Ind, group = Tx),
+             position = position_dodge(width = 0.75),
+             size = 2, alpha = 0.9) +
+  scale_color_manual(values = Ind_palc, name = &quot;Ind&quot;) +
+  scale_fill_manual(values = tx_cols, name = &quot;Tx&quot;) +
+  scale_y_continuous(labels = label_number(suffix = &quot; M&quot;, scale = 1e-6)) +
+  facet_wrap(~Facet, scales = &quot;free_y&quot;, ncol = 3) +
+  labs(
+    title = &quot;Read metrics across treatments and sample types&quot;,
+    x = NULL,
+    y = &quot;read_count&quot;
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.5), hjust = 0.5),
+    axis.text.x  = element_text(angle = 30, hjust = 1),
+    strip.text.x = element_text(face = &quot;bold&quot;)
+  )</code></pre>
+<p><img src="figure/Total_Reads_and_Mapped_Reads_CTCF_RAD21.Rmd/dedup5-1.png" width="1344" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

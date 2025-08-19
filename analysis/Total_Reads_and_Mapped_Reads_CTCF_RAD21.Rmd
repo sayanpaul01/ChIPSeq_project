@@ -973,3 +973,89 @@ ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
     axis.text.x  = element_text(angle = 90, hjust = 1, vjust = 0.2)
   )
 ```
+
+## **📌 Comparison of VEH and DOX reads across ChIP and Input samples**
+```{r dedup5, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=14}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# ---- Ensure numeric ----
+map <- map %>%
+  mutate(
+    Total.Reads..before.trimming.              = as.numeric(Total.Reads..before.trimming.),
+    Mapped.Reads                               = as.numeric(Mapped.Reads),
+    Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
+    Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
+    Nuclear.reads.before.dedup                 = as.numeric(Nuclear.reads.before.dedup),
+    Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication)
+  )
+
+# ---- Metric definitions ----
+metric_order <- c(
+  "Total.Reads..before.trimming.",
+  "Mapped.Reads",
+  "Reads.after.deduplication",
+  "Uniquely.mapped.reads.before.deduplication",
+  "Nuclear.reads.before.dedup",
+  "Uniquely.mapped.reads.after.deduplication"
+)
+
+metric_labels <- c(
+  "Total.Reads..before.trimming."              = "total_reads",
+  "Mapped.Reads"                               = "mapped_reads",
+  "Reads.after.deduplication"                  = "dedup_reads",
+  "Uniquely.mapped.reads.before.deduplication" = "unique_pre_dedup",
+  "Nuclear.reads.before.dedup"                 = "nuclear_pre_dedup",
+  "Uniquely.mapped.reads.after.deduplication"  = "unique_post_dedup"
+)
+
+# ---- Reshape ----
+long5 <- map %>%
+  dplyr::select(Ind, Type, Treatment, dplyr::all_of(metric_order)) %>%
+  pivot_longer(
+    cols = dplyr::all_of(metric_order),
+    names_to = "Metric", values_to = "Reads"
+  ) %>%
+  mutate(
+    Metric = factor(Metric, levels = metric_order, labels = metric_labels),
+    Ind    = factor(Ind, levels = sort(unique(Ind))),
+    Tx     = ifelse(grepl("^VEH", Treatment), "VEH", "DOX"),
+    Tx     = factor(Tx, levels = c("VEH", "DOX")),
+    # build clean facet names: e.g. VEH_TOP2B_ChIP
+    Facet  = paste(Tx, gsub("VEH_|DOX_", "", Treatment), Type, sep = "_"),
+    Facet  = factor(Facet, levels = unique(paste(Tx, gsub("VEH_|DOX_", "", Treatment), Type, sep = "_")))
+  ) %>%
+  droplevels()
+
+# ---- Colors ----
+Ind_palc <- c("#ffbe0b","#ff006e","#fb5607","#8338ec","#3a86ff","#4a4e69")
+tx_cols  <- c("VEH" = "#1f77b4", "DOX" = "#d62728")
+
+# ---- Plot ----
+ggplot(long5, aes(x = Metric, y = Reads)) +
+  geom_boxplot(aes(fill = Tx),
+               color = "black", width = 0.65, outlier.shape = NA,
+               position = position_dodge(width = 0.75)) +
+  geom_point(aes(color = Ind, group = Tx),
+             position = position_dodge(width = 0.75),
+             size = 2, alpha = 0.9) +
+  scale_color_manual(values = Ind_palc, name = "Ind") +
+  scale_fill_manual(values = tx_cols, name = "Tx") +
+  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  facet_wrap(~Facet, scales = "free_y", ncol = 3) +
+  labs(
+    title = "Read metrics across treatments and sample types",
+    x = NULL,
+    y = "read_count"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title   = element_text(size = rel(1.5), hjust = 0.5),
+    axis.text.x  = element_text(angle = 30, hjust = 1),
+    strip.text.x = element_text(face = "bold")
+  )
+```
+

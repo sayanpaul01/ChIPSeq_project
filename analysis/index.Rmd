@@ -19,3 +19,8 @@ Welcome to my research website.
 - **[Total Reads, trimming, duplication and mapping (TOP2B and P53)](https://sayanpaul01.github.io/ChIPSeq_project/Total_Reads_and_Mapped_Reads_TOP2B_P53.html)**
 
 - **[Total Reads, trimming, duplication and mapping (CTCF and RAD21)](https://sayanpaul01.github.io/ChIPSeq_project/Total_Reads_and_Mapped_Reads_CTCF_RAD21.html)**
+
+### **Peak Calling**
+
+- **[Peak calling cutoff (TOP2B and P53)](https://sayanpaul01.github.io/ChIPSeq_project/Peak_Calling_cutoff_TOP2B_P53.html)**
+

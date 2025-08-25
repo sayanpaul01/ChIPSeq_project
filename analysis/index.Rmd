@@ -24,3 +24,5 @@ Welcome to my research website.
 
 - **[Peak calling cutoff (TOP2B and P53)](https://sayanpaul01.github.io/ChIPSeq_project/Peak_Calling_cutoff_TOP2B_P53.html)**
 
+- **[Peak summary stat (TOP2B and P53)](https://sayanpaul01.github.io/ChIPSeq_project/Peak_details_TOP2B_P53.html)**
+

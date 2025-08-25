@@ -1,0 +1,284 @@
+---
+title: "Peak Calling cutoff (RAD21 and CTCF)"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## **📌 CTCF peaks cutoff (before deduplication)**
+```{r CTCF, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)   # for label_number()
+
+# --- metadata (CTCF) ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP63",   "Ind1_VEH_CTCF",
+  "MCW_SP_ChIP64",   "Ind1_DOX_CTCF",
+  "MCW_SP_ChIP65",   "Ind2_VEH_CTCF",
+  "MCW_SP_ChIP66",   "Ind2_DOX_CTCF",
+  "MCW_SP_ChIP67",   "Ind3_VEH_CTCF",
+  "MCW_SP_ChIP68",   "Ind3_DOX_CTCF"
+) |> mutate(
+  Sample     = factor(Sample,     levels = Sample),
+  Sample_Det = factor(Sample_Det, levels = Sample_Det)
+)
+
+# --- load all cutoff-analysis files (CTCF narrow peaks) ---
+files <- list.files("data/macs3_narrow_out_CTCF",
+                    pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files |>
+  set_names() |>
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") |>
+  mutate(Sample = basename(filepath) |> str_remove("_cutoff_analysis\\.txt")) |>
+  left_join(metadata, by = "Sample") |>
+  mutate(Sample_Det = factor(Sample_Det, levels = levels(metadata$Sample_Det))) |>
+  arrange(Sample_Det, qscore)
+
+# Common x-scale (guarantees tick at 0 through 7)
+# Common x-axis (ticks only; no limits here)
+x_ticks <- scale_x_continuous(
+  breaks = 0:7,
+  labels = as.character(0:7),
+  expand = c(0, 0)
+)
+
+# ---- Plot with linear y-axis ----
+p_linear <- ggplot(df, aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks +
+  coord_cartesian(xlim = c(0, 7)) +   # zoom without dropping rows
+  scale_y_continuous(labels = scales::label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Peak Counts (linear)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank())
+
+# ---- Plot with log10 y-axis ----
+p_log <- df %>%
+  mutate(npeaks = ifelse(npeaks <= 0, NA_real_, npeaks)) %>%  # log can't show 0/neg
+  ggplot(aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +    # drop NA quietly
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks +
+  coord_cartesian(xlim = c(0, 7)) +                           # no row removal
+  scale_y_log10(labels = scales::label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Peak Counts (log10)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank())
+
+p_linear
+p_log
+```
+
+## **📌 RAD21 peaks cutoff (before deduplication)**
+```{r RAD21, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)   # for label_number()
+
+# --- metadata (RAD21) ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP69",   "Ind1_VEH_RAD21",
+  "MCW_SP_ChIP70",   "Ind1_DOX_RAD21",
+  "MCW_SP_ChIP71",   "Ind2_VEH_RAD21",
+  "MCW_SP_ChIP72",   "Ind2_DOX_RAD21",
+  "MCW_SP_ChIP73",   "Ind3_VEH_RAD21",
+  "MCW_SP_ChIP74",   "Ind3_DOX_RAD21"
+) |>
+  mutate(
+    Sample     = factor(Sample,     levels = Sample),
+    Sample_Det = factor(Sample_Det, levels = Sample_Det)
+  )
+
+# --- load cutoff-analysis files (RAD21 narrow peaks) ---
+files <- list.files("data/macs3_narrow_out_RAD21",
+                    pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files |>
+  set_names() |>
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") |>
+  mutate(Sample = basename(filepath) |> str_remove("_cutoff_analysis\\.txt")) |>
+  left_join(metadata, by = "Sample") |>
+  mutate(Sample_Det = factor(Sample_Det, levels = levels(metadata$Sample_Det))) |>
+  arrange(Sample_Det, qscore)
+
+# X-axis ticks (0..7) and view window without dropping rows
+x_ticks <- scale_x_continuous(breaks = 0:7, labels = as.character(0:7), expand = c(0, 0))
+
+# ---- Plot with linear y-axis ----
+p_linear <- ggplot(df, aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks + coord_cartesian(xlim = c(0, 7)) +
+  scale_y_continuous(labels = scales::label_number(big.mark = ",")) +
+  labs(title = "RAD21 narrow peaks across samples (before deduplication)",
+       x = "Q Score", y = "Peak Counts (linear)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank(),
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+# ---- Plot with log10 y-axis ----
+p_log <- df |>
+  mutate(npeaks = ifelse(npeaks <= 0, NA_real_, npeaks)) |>
+  ggplot(aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks + coord_cartesian(xlim = c(0, 7)) +
+  scale_y_log10(labels = scales::label_number(big.mark = ",")) +
+  labs(title = "RAD21 narrow peaks across samples (before deduplication)",
+       x = "Q Score", y = "Peak Counts (log10)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank(),
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+# ---- Print both ----
+p_linear
+p_log
+```
+
+## **📌 CTCF peaks cutoff (after deduplication)**
+```{r CTCF_dedup, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)   # for label_number()
+
+# --- metadata (CTCF) ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP63",   "Ind1_VEH_CTCF",
+  "MCW_SP_ChIP64",   "Ind1_DOX_CTCF",
+  "MCW_SP_ChIP65",   "Ind2_VEH_CTCF",
+  "MCW_SP_ChIP66",   "Ind2_DOX_CTCF",
+  "MCW_SP_ChIP67",   "Ind3_VEH_CTCF",
+  "MCW_SP_ChIP68",   "Ind3_DOX_CTCF"
+) |> mutate(
+  Sample     = factor(Sample,     levels = Sample),
+  Sample_Det = factor(Sample_Det, levels = Sample_Det)
+)
+
+# --- load all cutoff-analysis files (CTCF narrow peaks) ---
+files <- list.files("data/macs3_narrow_out_CTCF_dedup",
+                    pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files |>
+  set_names() |>
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") |>
+  mutate(Sample = basename(filepath) |> str_remove("_cutoff_analysis\\.txt")) |>
+  left_join(metadata, by = "Sample") |>
+  mutate(Sample_Det = factor(Sample_Det, levels = levels(metadata$Sample_Det))) |>
+  arrange(Sample_Det, qscore)
+
+# Common x-scale (guarantees tick at 0 through 7)
+# Common x-axis (ticks only; no limits here)
+x_ticks <- scale_x_continuous(
+  breaks = 0:7,
+  labels = as.character(0:7),
+  expand = c(0, 0)
+)
+
+# ---- Plot with linear y-axis ----
+p_linear <- ggplot(df, aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks +
+  coord_cartesian(xlim = c(0, 7)) +   # zoom without dropping rows
+  scale_y_continuous(labels = scales::label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Peak Counts (linear)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank())
+
+# ---- Plot with log10 y-axis ----
+p_log <- df %>%
+  mutate(npeaks = ifelse(npeaks <= 0, NA_real_, npeaks)) %>%  # log can't show 0/neg
+  ggplot(aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +    # drop NA quietly
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks +
+  coord_cartesian(xlim = c(0, 7)) +                           # no row removal
+  scale_y_log10(labels = scales::label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Peak Counts (log10)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank())
+
+p_linear
+p_log
+```
+
+## **📌 RAD21 peaks cutoff (after deduplication)**
+```{r RAD21_dedup, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)   # for label_number()
+
+# --- metadata (RAD21) ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP69",   "Ind1_VEH_RAD21",
+  "MCW_SP_ChIP70",   "Ind1_DOX_RAD21",
+  "MCW_SP_ChIP71",   "Ind2_VEH_RAD21",
+  "MCW_SP_ChIP72",   "Ind2_DOX_RAD21",
+  "MCW_SP_ChIP73",   "Ind3_VEH_RAD21",
+  "MCW_SP_ChIP74",   "Ind3_DOX_RAD21"
+) |>
+  mutate(
+    Sample     = factor(Sample,     levels = Sample),
+    Sample_Det = factor(Sample_Det, levels = Sample_Det)
+  )
+
+# --- load cutoff-analysis files (RAD21 narrow peaks) ---
+files <- list.files("data/macs3_narrow_out_RAD21_dedup",
+                    pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files |>
+  set_names() |>
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") |>
+  mutate(Sample = basename(filepath) |> str_remove("_cutoff_analysis\\.txt")) |>
+  left_join(metadata, by = "Sample") |>
+  mutate(Sample_Det = factor(Sample_Det, levels = levels(metadata$Sample_Det))) |>
+  arrange(Sample_Det, qscore)
+
+# X-axis ticks (0..7) and view window without dropping rows
+x_ticks <- scale_x_continuous(breaks = 0:7, labels = as.character(0:7), expand = c(0, 0))
+
+# ---- Plot with linear y-axis ----
+p_linear <- ggplot(df, aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks + coord_cartesian(xlim = c(0, 7)) +
+  scale_y_continuous(labels = scales::label_number(big.mark = ",")) +
+  labs(title = "RAD21 narrow peaks across samples (after deduplication)",
+       x = "Q Score", y = "Peak Counts (linear)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank(),
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+# ---- Plot with log10 y-axis ----
+p_log <- df |>
+  mutate(npeaks = ifelse(npeaks <= 0, NA_real_, npeaks)) |>
+  ggplot(aes(qscore, npeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02", na.rm = TRUE) +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 3) +
+  x_ticks + coord_cartesian(xlim = c(0, 7)) +
+  scale_y_log10(labels = scales::label_number(big.mark = ",")) +
+  labs(title = "RAD21 narrow peaks across samples (after deduplication)",
+       x = "Q Score", y = "Peak Counts (log10)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank(),
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+# ---- Print both ----
+p_linear
+p_log
+```

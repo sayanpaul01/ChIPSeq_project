@@ -28,3 +28,4 @@ Welcome to my research website.
 
 - **[Peak summary stat (TOP2B and P53)](https://sayanpaul01.github.io/ChIPSeq_project/Peak_details_TOP2B_P53.html)**
 
+- **[Peak summary stat (CTCF and RAD21)](https://sayanpaul01.github.io/ChIPSeq_project/Peak_details_CTCF_RAD21.html)**

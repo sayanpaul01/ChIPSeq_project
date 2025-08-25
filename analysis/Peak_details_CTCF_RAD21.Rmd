@@ -1,0 +1,272 @@
+---
+title: "Peak details (CTCF and RAD21)"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## **📌 CTCF peaks (before deduplication)**
+```{r CTCF, echo=TRUE, message=FALSE}
+
+library(tidyverse)
+library(readr)
+library(scales)
+library(grid)  # for unit()
+
+# CSV should contain: Sample_Det (or "Sample Det"), Tx (or "Treatment"), Peaks
+df <- read_csv("data/CTCF_peaks_before_dedup.csv", show_col_types = FALSE)
+
+# Normalize common header variants (safe no-ops if not present)
+if ("Sample Det" %in% names(df)) df <- df |> rename(Sample_Det = `Sample Det`)
+if (!"Tx" %in% names(df) && "Treatment" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Treatment, regex("VEH", TRUE)) ~ "VEH",
+    str_detect(Treatment, regex("DOX", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+# If Tx still missing, try to infer from Sample_Det
+if (!"Tx" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Sample_Det, regex("\\bVEH\\b", TRUE)) ~ "VEH",
+    str_detect(Sample_Det, regex("\\bDOX\\b", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+
+# Lock X order to the file order
+plot_df <- df |>
+  mutate(
+    Sample_Det = factor(Sample_Det, levels = unique(Sample_Det)),
+    Tx         = factor(Tx, levels = c("VEH","DOX"))
+  )
+
+p_ctcf <- ggplot(plot_df, aes(x = Sample_Det, y = Peaks, fill = Tx)) +
+  geom_col(width = 0.72) +
+  scale_x_discrete(limits = levels(plot_df$Sample_Det)) +  # keep file order
+  scale_fill_manual(values = c("VEH" = "#3386DD", "DOX" = "#d95f02"), na.value = "grey70") +
+  scale_y_continuous(labels = scales::label_number(big.mark = ","), 
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(
+    title = "CTCF peaks across samples (before deduplication)",
+    x = "Sample details",
+    y = "Number of peaks",
+    fill = "Treatment"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position       = "right",
+    legend.title          = element_text(face = "bold"),
+    legend.box.background = element_rect(color = "black", size = 0.6),
+    legend.background     = element_rect(fill = "white"),
+    panel.border          = element_rect(color = "black", fill = NA, size = 0.6),
+    panel.grid.minor      = element_blank(),
+    panel.spacing         = unit(6, "pt"),
+    axis.text.x           = element_text(angle = 45, hjust = 1),
+    plot.title            = element_text(hjust = 0.5, face = "bold", size = 16)
+  )
+
+p_ctcf
+```
+
+## **📌 RAD21 peaks (before deduplication)**
+```{r RAD21, echo=TRUE, message=FALSE}
+
+library(tidyverse)
+library(readr)
+library(scales)
+library(grid)  # for unit()
+
+# CSV should contain: Sample_Det (or "Sample Det"), Tx (or "Treatment"), Peaks
+df <- read_csv("data/RAD21_peaks_before_dedup.csv", show_col_types = FALSE)
+
+# Normalize common header variants (safe no-ops if not present)
+if ("Sample Det" %in% names(df)) df <- df |> rename(Sample_Det = `Sample Det`)
+if (!"Tx" %in% names(df) && "Treatment" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Treatment, regex("VEH", TRUE)) ~ "VEH",
+    str_detect(Treatment, regex("DOX", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+# If Tx still missing, try to infer from Sample_Det
+if (!"Tx" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Sample_Det, regex("\\bVEH\\b", TRUE)) ~ "VEH",
+    str_detect(Sample_Det, regex("\\bDOX\\b", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+
+# Lock X order to the file order
+plot_df <- df |>
+  mutate(
+    Sample_Det = factor(Sample_Det, levels = unique(Sample_Det)),
+    Tx         = factor(Tx, levels = c("VEH","DOX"))
+  )
+
+p_rad21 <- ggplot(plot_df, aes(x = Sample_Det, y = Peaks, fill = Tx)) +
+  geom_col(width = 0.72) +
+  scale_x_discrete(limits = levels(plot_df$Sample_Det)) +  # keep file order
+  scale_fill_manual(values = c("VEH" = "#3386DD", "DOX" = "#d95f02"), na.value = "grey70") +
+  scale_y_continuous(labels = label_number(big.mark = ","), 
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(
+    title = "RAD21 peaks across samples (before deduplication)",
+    x = "Sample details",
+    y = "Number of peaks",
+    fill = "Treatment"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position       = "right",
+    legend.title          = element_text(face = "bold"),
+    legend.box.background = element_rect(color = "black", size = 0.6),
+    legend.background     = element_rect(fill = "white"),
+    panel.border          = element_rect(color = "black", fill = NA, size = 0.6),
+    panel.grid.minor      = element_blank(),
+    panel.spacing         = unit(6, "pt"),
+    axis.text.x           = element_text(angle = 45, hjust = 1),
+    plot.title            = element_text(hjust = 0.5, face = "bold", size = 16)
+  )
+
+p_rad21
+```
+
+## **📌 CTCF peaks (after deduplication)**
+```{r CTCF_after, echo=TRUE, message=FALSE}
+library(tidyverse)
+library(readr)
+library(scales)
+library(grid)  # for unit()
+
+# Try CSV first, then TSV if that's what you saved
+path <- "data/CTCF_peaks_after_dedup.csv"
+if (!file.exists(path)) path <- "data/CTCF_peaks_after_dedup.tsv"
+
+df <- read_delim(path,
+                 delim = ifelse(grepl("\\.tsv$", path, ignore.case = TRUE), "\t", ","),
+                 show_col_types = FALSE)
+
+# Normalize header variants (safe no-ops if not present)
+if ("Sample Det" %in% names(df)) df <- df |> rename(Sample_Det = `Sample Det`)
+if (!"Tx" %in% names(df) && "Treatment" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Treatment, regex("VEH", TRUE)) ~ "VEH",
+    str_detect(Treatment, regex("DOX", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+# If Tx still missing, infer from Sample_Det
+if (!"Tx" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Sample_Det, regex("\\bVEH\\b", TRUE)) ~ "VEH",
+    str_detect(Sample_Det, regex("\\bDOX\\b", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+
+# Lock X order to file order and set factors
+plot_df <- df |>
+  mutate(
+    Sample_Det = factor(Sample_Det, levels = unique(Sample_Det)),
+    Tx         = factor(Tx, levels = c("VEH","DOX"))
+  )
+
+p_ctcf_after <- ggplot(plot_df, aes(x = Sample_Det, y = Peaks, fill = Tx)) +
+  geom_col(width = 0.72) +
+  scale_x_discrete(limits = levels(plot_df$Sample_Det)) +  # keep file order
+  scale_fill_manual(values = c("VEH" = "#3386DD", "DOX" = "#d95f02"), na.value = "grey70") +
+  scale_y_continuous(labels = label_number(big.mark = ","), 
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(
+    title = "CTCF peaks across samples (after deduplication)",
+    x = "Sample details",
+    y = "Number of peaks",
+    fill = "Treatment"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position       = "right",
+    legend.title          = element_text(face = "bold"),
+    legend.box.background = element_rect(color = "black", size = 0.6),
+    legend.background     = element_rect(fill = "white"),
+    panel.border          = element_rect(color = "black", fill = NA, size = 0.6),
+    panel.grid.minor      = element_blank(),
+    panel.spacing         = unit(6, "pt"),
+    axis.text.x           = element_text(angle = 45, hjust = 1),
+    plot.title            = element_text(hjust = 0.5, face = "bold", size = 16)
+  )
+
+p_ctcf_after
+```
+
+## **📌 RAD21 peaks (after deduplication)**
+```{r RAD21_after, echo=TRUE, message=FALSE}
+library(tidyverse)
+library(readr)
+library(scales)
+library(grid)  # for unit()
+
+# Try CSV first, then TSV if that's what you saved
+path <- "data/RAD21_peaks_after_dedup.csv"
+if (!file.exists(path)) path <- "data/RAD21_peaks_after_dedup.tsv"
+
+df <- read_delim(
+  path,
+  delim = ifelse(grepl("\\.tsv$", path, ignore.case = TRUE), "\t", ","),
+  show_col_types = FALSE
+)
+
+# Normalize header variants (safe no-ops if not present)
+if ("Sample Det" %in% names(df)) df <- df |> rename(Sample_Det = `Sample Det`)
+if (!"Tx" %in% names(df) && "Treatment" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Treatment, regex("VEH", TRUE)) ~ "VEH",
+    str_detect(Treatment, regex("DOX", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+# If Tx still missing, infer from Sample_Det
+if (!"Tx" %in% names(df)) {
+  df <- df |> mutate(Tx = case_when(
+    str_detect(Sample_Det, regex("\\bVEH\\b", TRUE)) ~ "VEH",
+    str_detect(Sample_Det, regex("\\bDOX\\b", TRUE)) ~ "DOX",
+    TRUE ~ NA_character_
+  ))
+}
+
+# Lock X order to file order and set factors
+plot_df <- df |>
+  mutate(
+    Sample_Det = factor(Sample_Det, levels = unique(Sample_Det)),
+    Tx         = factor(Tx, levels = c("VEH","DOX"))
+  )
+
+p_rad21_after <- ggplot(plot_df, aes(x = Sample_Det, y = Peaks, fill = Tx)) +
+  geom_col(width = 0.72) +
+  scale_x_discrete(limits = levels(plot_df$Sample_Det)) +  # keep file order
+  scale_fill_manual(values = c("VEH" = "#3386DD", "DOX" = "#d95f02"), na.value = "grey70") +
+  scale_y_continuous(labels = label_number(big.mark = ","), 
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(
+    title = "RAD21 peaks across samples (after deduplication)",
+    x = "Sample details",
+    y = "Number of peaks",
+    fill = "Treatment"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position       = "right",
+    legend.title          = element_text(face = "bold"),
+    legend.box.background = element_rect(color = "black", size = 0.6),
+    legend.background     = element_rect(fill = "white"),
+    panel.border          = element_rect(color = "black", fill = NA, size = 0.6),
+    panel.grid.minor      = element_blank(),
+    panel.spacing         = unit(6, "pt"),
+    axis.text.x           = element_text(angle = 45, hjust = 1),
+    plot.title            = element_text(hjust = 0.5, face = "bold", size = 16)
+  )
+
+p_rad21_after
+```

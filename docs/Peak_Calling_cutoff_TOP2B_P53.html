@@ -365,7 +365,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -376,8 +376,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -390,9 +390,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>ChIPSeq_project/</code> <span
@@ -415,21 +415,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -520,15 +517,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttree356fff38ccb7cdcf0a6a4962a741130910269234targetblank356fff3a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreebc515e62c7bc897452ee99147b959913710fa586targetblankbc515e6a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/356fff38ccb7cdcf0a6a4962a741130910269234" target="_blank">356fff3</a>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/bc515e62c7bc897452ee99147b959913710fa586" target="_blank">bc515e6</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttree356fff38ccb7cdcf0a6a4962a741130910269234targetblank356fff3a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreebc515e62c7bc897452ee99147b959913710fa586targetblankbc515e6a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -538,7 +535,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/356fff38ccb7cdcf0a6a4962a741130910269234" target="_blank">356fff3</a>.
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/bc515e62c7bc897452ee99147b959913710fa586" target="_blank">bc515e6</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -555,9 +552,6 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-
-Unstaged changes:
-    Modified:   analysis/Peak_Calling_cutoff_TOP2B_P53.Rmd
 
 </code></pre>
 <p>
@@ -604,6 +598,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/analysis/Peak_Calling_cutoff_TOP2B_P53.Rmd" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+<td>
+Commit
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/sayanpaul01/ChIPSeq_project/bc515e62c7bc897452ee99147b959913710fa586/docs/Peak_Calling_cutoff_TOP2B_P53.html" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+<td>
+Commit
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1655,8 +1683,82 @@ p_log &lt;- df |&gt;
 # ---- Print both ----
 p_linear</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_lpeaks-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP_lpeaks-1">
+Past versions of TOP_lpeaks-1.png
+</button>
+</p>
+<div id="fig-TOP_lpeaks-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_lpeaks-1.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>p_log</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_lpeaks-2.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP_lpeaks-2">
+Past versions of TOP_lpeaks-2.png
+</button>
+</p>
+<div id="fig-TOP_lpeaks-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_lpeaks-2.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="top2b-narrow-peaks-length-before-deduplication"
 class="section level2">
@@ -1734,8 +1836,82 @@ p_log &lt;- df %&gt;%
 # ---- Print both ----
 p_linear</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP2_lpeaks-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP2_lpeaks-1">
+Past versions of TOP2_lpeaks-1.png
+</button>
+</p>
+<div id="fig-TOP2_lpeaks-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP2_lpeaks-1.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>p_log</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP2_lpeaks-2.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP2_lpeaks-2">
+Past versions of TOP2_lpeaks-2.png
+</button>
+</p>
+<div id="fig-TOP2_lpeaks-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP2_lpeaks-2.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="p53-narrow-peaks-length-before-deduplication"
 class="section level2">
@@ -1817,8 +1993,82 @@ p_log_p53 &lt;- df_p53 %&gt;%
 # ---- show both ----
 p_linear_p53</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_length-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-P53_length-1">
+Past versions of P53_length-1.png
+</button>
+</p>
+<div id="fig-P53_length-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_length-1.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>p_log_p53</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_length-2.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-P53_length-2">
+Past versions of P53_length-2.png
+</button>
+</p>
+<div id="fig-P53_length-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_length-2.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="top2b-broad-peaks-length-after-deduplication"
 class="section level2">
@@ -1896,8 +2146,82 @@ p_log &lt;- df %&gt;%
 # ---- Print both ----
 p_linear</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup_length-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP_dedup_length-1">
+Past versions of TOP_dedup_length-1.png
+</button>
+</p>
+<div id="fig-TOP_dedup_length-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup_length-1.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>p_log</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup_length-2.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP_dedup_length-2">
+Past versions of TOP_dedup_length-2.png
+</button>
+</p>
+<div id="fig-TOP_dedup_length-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup_length-2.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="top2b-narrow-peaks-length-after-deduplication"
 class="section level2">
@@ -1975,8 +2299,82 @@ p_log &lt;- df %&gt;%
 # ---- Print both ----
 p_linear</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup1_length-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP_dedup1_length-1">
+Past versions of TOP_dedup1_length-1.png
+</button>
+</p>
+<div id="fig-TOP_dedup1_length-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup1_length-1.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>p_log</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup1_length-2.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-TOP_dedup1_length-2">
+Past versions of TOP_dedup1_length-2.png
+</button>
+</p>
+<div id="fig-TOP_dedup1_length-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP_dedup1_length-2.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="p53-narrow-peaks-length-after-deduplication"
 class="section level2">
@@ -2058,8 +2456,82 @@ p_log_p53 &lt;- df_p53 %&gt;%
 # ---- show both ----
 p_linear_p53</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_1_length-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-P53_1_length-1">
+Past versions of P53_1_length-1.png
+</button>
+</p>
+<div id="fig-P53_1_length-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_1_length-1.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>p_log_p53</code></pre>
 <p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_1_length-2.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-P53_1_length-2">
+Past versions of P53_1_length-2.png
+</button>
+</p>
+<div id="fig-P53_1_length-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/blob/bc515e62c7bc897452ee99147b959913710fa586/docs/figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/P53_1_length-2.png" target="_blank">bc515e6</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

@@ -460,3 +460,472 @@ p_log_p53 <- ggplot(df_p53, aes(qscore, npeaks, group = Sample)) +
 p_linear_p53
 p_log_p53
 ```
+
+
+## **📌 TOP2B broad peaks length (before deduplication)**
+```{r TOP_lpeaks, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)
+
+# --- metadata ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP27",   "Ind1_VEH_TOP2B",
+  "MCW_SP_ChIP28",   "Ind1_DOX_TOP2B",
+  "MCW_SP_ChIP31",   "Ind2_VEH_TOP2B",
+  "MCW_SP_ChIP32",   "Ind2_DOX_TOP2B",
+  "MCW_SP_ChIP39",   "Ind3_VEH_TOP2B",
+  "MCW_SP_ChIP40",   "Ind3_DOX_TOP2B",
+  "MCW_SP_ChIP43",   "Ind4_VEH_TOP2B",
+  "MCW_SP_ChIP44",   "Ind4_DOX_TOP2B",
+  "MCW_SP_ChIP51",   "Ind5_VEH_TOP2B",
+  "MCW_SP_ChIP52",   "Ind5_DOX_TOP2B",
+  "MCW_SP_ChIP55",   "Ind6_VEH_TOP2B",
+  "MCW_SP_ChIP56",   "Ind6_DOX_TOP2B"
+) |> mutate(
+  Sample     = factor(Sample,     levels = Sample),
+  Sample_Det = factor(Sample_Det, levels = Sample_Det)
+)
+
+# --- load all cutoff analysis files ---
+files <- list.files("data/macs3_broad_out_TOP2B",
+                    pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files |>
+  set_names() |>
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") |>
+  mutate(Sample = basename(filepath) |> str_remove("_cutoff_analysis\\.txt")) |>
+  left_join(metadata, by = "Sample") |>
+  mutate(Sample_Det = factor(Sample_Det, levels = levels(metadata$Sample_Det))) |>
+  arrange(Sample_Det, qscore)
+
+# Common x-scale (guarantees tick at 0)
+x_fixed <- scale_x_continuous(
+  limits = c(0, 7),
+  breaks = 0:7,
+  labels = as.character(0:7),
+  expand = c(0, 0)
+)
+
+# ---- Plot with linear y-axis (lpeaks) ----
+p_linear <- ggplot(df, aes(qscore, lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  x_fixed +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, linear)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank())
+
+# ---- Plot with log10 y-axis (lpeaks) ----
+p_log <- df |>
+  mutate(lpeaks = ifelse(lpeaks <= 0, NA, lpeaks)) |>
+  ggplot(aes(qscore, lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  x_fixed +
+  scale_y_log10(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, log10)") +
+  theme_minimal(base_size = 12) +
+  theme(strip.text = element_text(face = "bold", size = 10),
+        panel.grid.minor = element_blank())
+
+# ---- Print both ----
+p_linear
+p_log
+```
+
+
+## **📌 TOP2B narrow peaks length (before deduplication)**
+```{r TOP2_lpeaks, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)
+
+# --- metadata ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP27",   "Ind1_VEH_TOP2B",
+  "MCW_SP_ChIP28",   "Ind1_DOX_TOP2B",
+  "MCW_SP_ChIP31",   "Ind2_VEH_TOP2B",
+  "MCW_SP_ChIP32",   "Ind2_DOX_TOP2B",
+  "MCW_SP_ChIP39",   "Ind3_VEH_TOP2B",
+  "MCW_SP_ChIP40",   "Ind3_DOX_TOP2B",
+  "MCW_SP_ChIP43",   "Ind4_VEH_TOP2B",
+  "MCW_SP_ChIP44",   "Ind4_DOX_TOP2B",
+  "MCW_SP_ChIP51",   "Ind5_VEH_TOP2B",
+  "MCW_SP_ChIP52",   "Ind5_DOX_TOP2B",
+  "MCW_SP_ChIP55",   "Ind6_VEH_TOP2B",
+  "MCW_SP_ChIP56",   "Ind6_DOX_TOP2B"
+)
+
+# --- load all cutoff analysis files ---
+files <- list.files("data/macs3_narrow_out_TOP2B", pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files %>%
+  set_names() %>%
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") %>%
+  mutate(Sample = basename(filepath) %>% str_remove("_cutoff_analysis\\.txt")) %>%
+  left_join(metadata, by = "Sample")
+
+# ---- Plot with linear y-axis ----
+p_linear <- df %>%
+  ggplot(aes(x = qscore, y = lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  scale_x_continuous(
+    limits = c(0, 7),
+    breaks = 0:7,
+    labels = as.character(0:7),
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, linear)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- Plot with log10 y-axis ----
+p_log <- df %>%
+  mutate(lpeaks = ifelse(lpeaks <= 0, NA, lpeaks)) %>%
+  ggplot(aes(x = qscore, y = lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  scale_x_continuous(
+    limits = c(0, 7),
+    breaks = 0:7,
+    labels = as.character(0:7),
+    expand = c(0, 0)
+  ) +
+  scale_y_log10(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, log10)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- Print both ----
+p_linear
+p_log
+```
+
+## **📌 P53 narrow peaks length (before deduplication)**
+```{r P53_length, echo=TRUE, fig.width=16, fig.height=10}
+
+library(tidyverse)
+library(readr)
+library(scales)
+
+# --- metadata for p53 ---
+metadata_p53 <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP29",   "Ind1_VEH_p53",
+  "MCW_SP_ChIP30",   "Ind1_DOX_p53",
+  "MCW_SP_ChIP33",   "Ind2_VEH_p53",
+  "MCW_SP_ChIP34",   "Ind2_DOX_p53",
+  "MCW_SP_ChIP41",   "Ind3_VEH_p53",
+  "MCW_SP_ChIP42",   "Ind3_DOX_p53",
+  "MCW_SP_ChIP45",   "Ind4_VEH_p53",
+  "MCW_SP_ChIP46",   "Ind4_DOX_p53",
+  "MCW_SP_ChIP53",   "Ind5_VEH_p53",
+  "MCW_SP_ChIP54",   "Ind5_DOX_p53",
+  "MCW_SP_ChIP57",   "Ind6_VEH_p53",
+  "MCW_SP_ChIP58",   "Ind6_DOX_p53"
+) %>%
+  mutate(
+    Sample     = factor(Sample,     levels = Sample),
+    Sample_Det = factor(Sample_Det, levels = Sample_Det)
+  )
+
+# --- load all cutoff-analysis files ---
+data_dir <- "data/macs3_narrow_out_P53"   # adjust if needed
+files <- list.files(data_dir, pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df_p53 <- files %>%
+  set_names() %>%
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") %>%
+  mutate(Sample = basename(filepath) %>% str_remove("_cutoff_analysis\\.txt")) %>%
+  left_join(metadata_p53, by = "Sample") %>%
+  mutate(Sample_Det = factor(Sample_Det, levels = levels(metadata_p53$Sample_Det))) %>%
+  arrange(Sample_Det, qscore)
+
+# --------- common x scale (forces 0..7 with a printed 0) ----------
+x_fixed <- scale_x_continuous(
+  limits = c(0, 7),
+  breaks = 0:7,
+  labels = as.character(0:7),
+  expand = c(0, 0)
+)
+
+# ---- linear y ----
+p_linear_p53 <- ggplot(df_p53, aes(qscore, lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  x_fixed +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, linear)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- log10 y ----
+p_log_p53 <- df_p53 %>%
+  mutate(lpeaks = ifelse(lpeaks <= 0, NA, lpeaks)) %>%
+  ggplot(aes(qscore, lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  x_fixed +
+  scale_y_log10(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, log10)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- show both ----
+p_linear_p53
+p_log_p53
+```
+
+
+## **📌 TOP2B broad peaks length (after deduplication)**
+```{r TOP_dedup_length, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)
+
+# --- metadata ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP27",   "Ind1_VEH_TOP2B",
+  "MCW_SP_ChIP28",   "Ind1_DOX_TOP2B",
+  "MCW_SP_ChIP31",   "Ind2_VEH_TOP2B",
+  "MCW_SP_ChIP32",   "Ind2_DOX_TOP2B",
+  "MCW_SP_ChIP39",   "Ind3_VEH_TOP2B",
+  "MCW_SP_ChIP40",   "Ind3_DOX_TOP2B",
+  "MCW_SP_ChIP43",   "Ind4_VEH_TOP2B",
+  "MCW_SP_ChIP44",   "Ind4_DOX_TOP2B",
+  "MCW_SP_ChIP51",   "Ind5_VEH_TOP2B",
+  "MCW_SP_ChIP52",   "Ind5_DOX_TOP2B",
+  "MCW_SP_ChIP55",   "Ind6_VEH_TOP2B",
+  "MCW_SP_ChIP56",   "Ind6_DOX_TOP2B"
+)
+
+# --- load all cutoff analysis files ---
+files <- list.files("data/macs3_broad_out_TOP2B_dedup", pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files %>%
+  set_names() %>%
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") %>%
+  mutate(Sample = basename(filepath) %>% str_remove("_cutoff_analysis\\.txt")) %>%
+  left_join(metadata, by = "Sample")
+
+# ---- Plot with linear y-axis ----
+p_linear <- df %>%
+  ggplot(aes(x = qscore, y = lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  scale_x_continuous(
+    limits = c(0, 7),
+    breaks = 0:7,
+    labels = as.character(0:7),
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, linear)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- Plot with log10 y-axis ----
+p_log <- df %>%
+  mutate(lpeaks = ifelse(lpeaks <= 0, NA, lpeaks)) %>%
+  ggplot(aes(x = qscore, y = lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  scale_x_continuous(
+    limits = c(0, 7),
+    breaks = 0:7,
+    labels = as.character(0:7),
+    expand = c(0, 0)
+  ) +
+  scale_y_log10(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, log10)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- Print both ----
+p_linear
+p_log
+```
+
+## **📌 TOP2B narrow peaks length (after deduplication)**
+```{r TOP_dedup1_length, echo=TRUE, fig.width=16, fig.height=10}
+library(tidyverse)
+library(readr)
+library(scales)
+
+# --- metadata ---
+metadata <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP27",   "Ind1_VEH_TOP2B",
+  "MCW_SP_ChIP28",   "Ind1_DOX_TOP2B",
+  "MCW_SP_ChIP31",   "Ind2_VEH_TOP2B",
+  "MCW_SP_ChIP32",   "Ind2_DOX_TOP2B",
+  "MCW_SP_ChIP39",   "Ind3_VEH_TOP2B",
+  "MCW_SP_ChIP40",   "Ind3_DOX_TOP2B",
+  "MCW_SP_ChIP43",   "Ind4_VEH_TOP2B",
+  "MCW_SP_ChIP44",   "Ind4_DOX_TOP2B",
+  "MCW_SP_ChIP51",   "Ind5_VEH_TOP2B",
+  "MCW_SP_ChIP52",   "Ind5_DOX_TOP2B",
+  "MCW_SP_ChIP55",   "Ind6_VEH_TOP2B",
+  "MCW_SP_ChIP56",   "Ind6_DOX_TOP2B"
+)
+
+# --- load all cutoff analysis files ---
+files <- list.files("data/macs3_narrow_out_TOP2B_dedup", pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df <- files %>%
+  set_names() %>%
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") %>%
+  mutate(Sample = basename(filepath) %>% str_remove("_cutoff_analysis\\.txt")) %>%
+  left_join(metadata, by = "Sample")
+
+# ---- Plot with linear y-axis ----
+p_linear <- df %>%
+  ggplot(aes(x = qscore, y = lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  scale_x_continuous(
+    limits = c(0, 7),
+    breaks = 0:7,
+    labels = as.character(0:7),
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, linear)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- Plot with log10 y-axis ----
+p_log <- df %>%
+  mutate(lpeaks = ifelse(lpeaks <= 0, NA, lpeaks)) %>%
+  ggplot(aes(x = qscore, y = lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  scale_x_continuous(
+    limits = c(0, 7),
+    breaks = 0:7,
+    labels = as.character(0:7),
+    expand = c(0, 0)
+  ) +
+  scale_y_log10(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, log10)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- Print both ----
+p_linear
+p_log
+```
+
+## **📌 P53 narrow peaks length (after deduplication)**
+```{r P53_1_length, echo=TRUE, fig.width=16, fig.height=10}
+
+library(tidyverse)
+library(readr)
+library(scales)
+
+# --- metadata for p53 ---
+metadata_p53 <- tribble(
+  ~Sample,           ~Sample_Det,
+  "MCW_SP_ChIP29",   "Ind1_VEH_p53",
+  "MCW_SP_ChIP30",   "Ind1_DOX_p53",
+  "MCW_SP_ChIP33",   "Ind2_VEH_p53",
+  "MCW_SP_ChIP34",   "Ind2_DOX_p53",
+  "MCW_SP_ChIP41",   "Ind3_VEH_p53",
+  "MCW_SP_ChIP42",   "Ind3_DOX_p53",
+  "MCW_SP_ChIP45",   "Ind4_VEH_p53",
+  "MCW_SP_ChIP46",   "Ind4_DOX_p53",
+  "MCW_SP_ChIP53",   "Ind5_VEH_p53",
+  "MCW_SP_ChIP54",   "Ind5_DOX_p53",
+  "MCW_SP_ChIP57",   "Ind6_VEH_p53",
+  "MCW_SP_ChIP58",   "Ind6_DOX_p53"
+) %>%
+  mutate(
+    Sample     = factor(Sample,     levels = Sample),
+    Sample_Det = factor(Sample_Det, levels = Sample_Det)
+  )
+
+# --- load all cutoff-analysis files ---
+data_dir <- "data/macs3_narrow_out_P53_dedup"
+files <- list.files(data_dir, pattern = "_cutoff_analysis\\.txt$", full.names = TRUE)
+
+df_p53 <- files %>%
+  set_names() %>%
+  map_dfr(~ read_delim(.x, delim = "\t", show_col_types = FALSE), .id = "filepath") %>%
+  mutate(Sample = basename(filepath) %>% str_remove("_cutoff_analysis\\.txt")) %>%
+  left_join(metadata_p53, by = "Sample") %>%
+  mutate(Sample_Det = factor(Sample_Det, levels = levels(metadata_p53$Sample_Det))) %>%
+  arrange(Sample_Det, qscore)
+
+# --------- common x scale (forces 0..7 with a printed 0) ----------
+x_fixed <- scale_x_continuous(
+  limits = c(0, 7),
+  breaks = 0:7,
+  labels = as.character(0:7),
+  expand = c(0, 0)
+)
+
+# ---- linear y (lpeaks) ----
+p_linear_p53 <- ggplot(df_p53, aes(qscore, lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  x_fixed +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, linear)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- log10 y (lpeaks) ----
+p_log_p53 <- df_p53 %>%
+  mutate(lpeaks = ifelse(lpeaks <= 0, NA, lpeaks)) %>%
+  ggplot(aes(qscore, lpeaks, group = Sample)) +
+  geom_line(size = 0.8, color = "#d95f02") +
+  facet_wrap(~ Sample_Det, scales = "free_y", ncol = 6) +
+  x_fixed +
+  scale_y_log10(labels = label_number(big.mark = ",")) +
+  labs(x = "Q Score", y = "Total Peak Length (bp, log10)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 10),
+    panel.grid.minor = element_blank()
+  )
+
+# ---- show both ----
+p_linear_p53
+p_log_p53
+```
+

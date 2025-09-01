@@ -929,3 +929,166 @@ p_linear_p53
 p_log_p53
 ```
 
+## **📌 Elbow cutoff TOP2B broad peaks (before deduplication)**
+```{r TOP2belbow, echo=TRUE, fig.width=14, fig.height=6}
+
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(readr)
+  library(scales)
+  library(stringr)
+})
+
+# ---- Load data ----
+df <- read_csv("data/ELBOW_TOP2B_broad.csv", show_col_types = FALSE)
+
+# ---- Ensure numeric + derive Individual ID and ordered Tx ----
+num_cols <- c("Elbow_cutoff_Qscore", "NPeaks_at_cutoff", "LPeaks_at_cutoff")
+df <- df %>% mutate(across(all_of(num_cols), as.numeric))
+
+# Robust 'Ind' derivation
+if ("Ind_ab" %in% names(df)) {
+  df <- df %>% mutate(Ind = str_extract(Ind_ab, "^Ind\\d+"))
+} else if ("Sample Det" %in% names(df)) {
+  df <- df %>% mutate(Ind = str_extract(`Sample Det`, "^Ind\\d+"))
+} else {
+  df <- df %>% mutate(Ind = Sample)
+}
+
+# Order Tx: VEH → DOX
+df <- df %>% mutate(Tx = factor(Tx, levels = c("VEH", "DOX")))
+
+# ---- Long format for plotting ----
+df_long <- df %>%
+  select(Sample, Ind, Tx, Elbow_cutoff_Qscore, NPeaks_at_cutoff, LPeaks_at_cutoff) %>%
+  pivot_longer(
+    cols = c(NPeaks_at_cutoff, LPeaks_at_cutoff, Elbow_cutoff_Qscore),
+    names_to = "metric", values_to = "value"
+  ) %>%
+  mutate(metric = recode(
+    metric,
+    NPeaks_at_cutoff     = "NPeaks at elbow",
+    LPeaks_at_cutoff     = "LPeaks at elbow (bp)",
+    Elbow_cutoff_Qscore  = "Elbow cutoff (−log10 q)"
+  ))
+
+# ---- Color palette (Okabe–Ito for up to 8 individuals) ----
+okabe_ito <- c(
+  "#E69F00", "#56B4E9", "#009E73",
+  "#F0E442", "#0072B2", "#D55E00",
+  "#CC79A7", "#999999"
+)
+n_ind <- df %>% distinct(Ind) %>% nrow()
+
+col_scale <- if (n_ind <= length(okabe_ito)) {
+  scale_color_manual(values = okabe_ito)
+} else {
+  scale_color_viridis_d(option = "C", end = 0.95)
+}
+
+# ---- Plot: Paired slopes VEH → DOX per individual ----
+p_slope <- ggplot(df_long, aes(x = Tx, y = value, group = Ind, color = Ind)) +
+  geom_line(linewidth = 1.2, alpha = 0.9) +
+  geom_point(size = 3) +
+  facet_wrap(~ metric, scales = "free_y", ncol = 3) +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  col_scale +
+  labs(
+    title = "Elbow cutoff TOP2B broad peaks (before dedup)",
+    x = NULL, y = NULL, color = "Individual"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    strip.text = element_text(face = "bold")
+  )
+
+# ---- Show plot ----
+print(p_slope)
+```
+
+## **📌 Elbow cutoff TOP2B narrow peaks (before deduplication)**
+```{r TOP2B_narrow, echo=TRUE, fig.width=14, fig.height=6}
+
+
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(readr)
+  library(scales)
+  library(stringr)
+})
+
+# ---- Load data ----
+df <- read_csv("data/ELBOW_TOP2B_narrow.csv", show_col_types = FALSE)
+
+# ---- Harmonize column names (supports both naming schemes) ----
+if ("Elbow_qscore" %in% names(df)) df <- df %>% rename(Elbow_cutoff_Qscore = Elbow_qscore)
+if ("NPeaks_at_elbow" %in% names(df)) df <- df %>% rename(NPeaks_at_cutoff = NPeaks_at_elbow)
+if ("LPeaks_at_elbow" %in% names(df)) df <- df %>% rename(LPeaks_at_cutoff = LPeaks_at_elbow)
+
+# ---- Ensure numeric + derive Individual ID and ordered Tx ----
+num_cols <- c("Elbow_cutoff_Qscore", "NPeaks_at_cutoff", "LPeaks_at_cutoff")
+df <- df %>% mutate(across(all_of(num_cols), as.numeric))
+
+# Robust 'Ind' derivation
+if ("Ind_ab" %in% names(df)) {
+  df <- df %>% mutate(Ind = str_extract(Ind_ab, "^Ind\\d+"))
+} else if ("Sample Det" %in% names(df)) {
+  df <- df %>% mutate(Ind = str_extract(`Sample Det`, "^Ind\\d+"))
+} else {
+  df <- df %>% mutate(Ind = Sample)
+}
+
+# Order Tx: VEH → DOX (handle both Tx or Treatment columns)
+if ("Tx" %in% names(df)) {
+  df <- df %>% mutate(Tx = factor(Tx, levels = c("VEH","DOX")))
+} else if ("Treatment" %in% names(df)) {
+  df <- df %>% mutate(Tx = factor(Treatment, levels = c("VEH_TOP2B","DOX_TOP2B")))
+}
+
+# ---- Long format for plotting ----
+df_long <- df %>%
+  select(Sample, Ind, Tx, Elbow_cutoff_Qscore, NPeaks_at_cutoff, LPeaks_at_cutoff) %>%
+  pivot_longer(
+    cols = c(NPeaks_at_cutoff, LPeaks_at_cutoff, Elbow_cutoff_Qscore),
+    names_to = "metric", values_to = "value"
+  ) %>%
+  mutate(metric = recode(
+    metric,
+    NPeaks_at_cutoff     = "NPeaks at elbow",
+    LPeaks_at_cutoff     = "LPeaks at elbow (bp)",
+    Elbow_cutoff_Qscore  = "Elbow cutoff (−log10 q)"
+  ))
+
+# ---- Color palette (Okabe–Ito up to 8 individuals, else viridis) ----
+okabe_ito <- c("#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#999999")
+n_ind <- df %>% distinct(Ind) %>% nrow()
+col_scale <- if (n_ind <= length(okabe_ito)) {
+  scale_color_manual(values = okabe_ito)
+} else {
+  scale_color_viridis_d(option = "C", end = 0.95)
+}
+
+# ---- Plot: Paired slopes VEH → DOX per individual ----
+p_slope <- ggplot(df_long, aes(x = Tx, y = value, group = Ind, color = Ind)) +
+  geom_line(linewidth = 1.2, alpha = 0.9) +
+  geom_point(size = 3) +
+  facet_wrap(~ metric, scales = "free_y", ncol = 3) +
+  scale_y_continuous(labels = label_number(big.mark = ",")) +
+  col_scale +
+  labs(
+    title = "Elbow cutoff TOP2B narrow peaks (before dedup)",
+    x = NULL, y = NULL, color = "Individual"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    strip.text = element_text(face = "bold")
+  )
+
+print(p_slope)
+```
+
+

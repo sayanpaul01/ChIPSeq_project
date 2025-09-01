@@ -365,7 +365,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -376,8 +376,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -386,13 +386,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-08-31
+<strong>Last updated:</strong> 2025-09-01
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>ChIPSeq_project/</code> <span
@@ -415,18 +415,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -517,15 +520,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreebc515e62c7bc897452ee99147b959913710fa586targetblankbc515e6a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreebf6352f6e698f348cb3517db18121ec006bf441btargetblankbf6352fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/bc515e62c7bc897452ee99147b959913710fa586" target="_blank">bc515e6</a>
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/bf6352f6e698f348cb3517db18121ec006bf441b" target="_blank">bf6352f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreebc515e62c7bc897452ee99147b959913710fa586targetblankbc515e6a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomsayanpaul01ChIPSeqprojecttreebf6352f6e698f348cb3517db18121ec006bf441btargetblankbf6352fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -535,7 +538,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/bc515e62c7bc897452ee99147b959913710fa586" target="_blank">bc515e6</a>.
+<a href="https://github.com/sayanpaul01/ChIPSeq_project/tree/bf6352f6e698f348cb3517db18121ec006bf441b" target="_blank">bf6352f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -552,6 +555,17 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  data/ELBOW_TOP2B_broad.csv
+    Untracked:  data/ELBOW_TOP2B_narrow.csv
+    Untracked:  data/macs3_broad_out_TOP2B/ELBOW_TOP2B_broad.csv
+    Untracked:  data/macs3_broad_out_TOP2B/ELBOW_TOP2B_broad.xlsx
+    Untracked:  data/macs3_broad_out_TOP2B/run_elbow_q.sh
+    Untracked:  data/macs3_narrow_out_TOP2B/ELBOW_Q_SUMMARY.xlsx
+
+Unstaged changes:
+    Modified:   analysis/Peak_Calling_cutoff_TOP2B_P53.Rmd
 
 </code></pre>
 <p>
@@ -598,6 +612,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/sayanpaul01/ChIPSeq_project/3cfce7f1983795932b1aa4df430c614f1c676678/docs/Peak_Calling_cutoff_TOP2B_P53.html" target="_blank">3cfce7f</a>
+</td>
+<td>
+sayanpaul01
+</td>
+<td>
+2025-08-31
+</td>
+<td>
+Commit
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2532,6 +2563,169 @@ sayanpaul01
 </table>
 </div>
 </div>
+</div>
+<div id="elbow-cutoff-top2b-broad-peaks-before-deduplication"
+class="section level2">
+<h2><strong>📌 Elbow cutoff TOP2B broad peaks (before
+deduplication)</strong></h2>
+<pre class="r"><code>suppressPackageStartupMessages({
+  library(tidyverse)
+  library(readr)
+  library(scales)
+  library(stringr)
+})
+
+# ---- Load data ----
+df &lt;- read_csv(&quot;data/ELBOW_TOP2B_broad.csv&quot;, show_col_types = FALSE)
+
+# ---- Ensure numeric + derive Individual ID and ordered Tx ----
+num_cols &lt;- c(&quot;Elbow_cutoff_Qscore&quot;, &quot;NPeaks_at_cutoff&quot;, &quot;LPeaks_at_cutoff&quot;)
+df &lt;- df %&gt;% mutate(across(all_of(num_cols), as.numeric))
+
+# Robust &#39;Ind&#39; derivation
+if (&quot;Ind_ab&quot; %in% names(df)) {
+  df &lt;- df %&gt;% mutate(Ind = str_extract(Ind_ab, &quot;^Ind\\d+&quot;))
+} else if (&quot;Sample Det&quot; %in% names(df)) {
+  df &lt;- df %&gt;% mutate(Ind = str_extract(`Sample Det`, &quot;^Ind\\d+&quot;))
+} else {
+  df &lt;- df %&gt;% mutate(Ind = Sample)
+}
+
+# Order Tx: VEH → DOX
+df &lt;- df %&gt;% mutate(Tx = factor(Tx, levels = c(&quot;VEH&quot;, &quot;DOX&quot;)))
+
+# ---- Long format for plotting ----
+df_long &lt;- df %&gt;%
+  select(Sample, Ind, Tx, Elbow_cutoff_Qscore, NPeaks_at_cutoff, LPeaks_at_cutoff) %&gt;%
+  pivot_longer(
+    cols = c(NPeaks_at_cutoff, LPeaks_at_cutoff, Elbow_cutoff_Qscore),
+    names_to = &quot;metric&quot;, values_to = &quot;value&quot;
+  ) %&gt;%
+  mutate(metric = recode(
+    metric,
+    NPeaks_at_cutoff     = &quot;NPeaks at elbow&quot;,
+    LPeaks_at_cutoff     = &quot;LPeaks at elbow (bp)&quot;,
+    Elbow_cutoff_Qscore  = &quot;Elbow cutoff (−log10 q)&quot;
+  ))
+
+# ---- Color palette (Okabe–Ito for up to 8 individuals) ----
+okabe_ito &lt;- c(
+  &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;,
+  &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;,
+  &quot;#CC79A7&quot;, &quot;#999999&quot;
+)
+n_ind &lt;- df %&gt;% distinct(Ind) %&gt;% nrow()
+
+col_scale &lt;- if (n_ind &lt;= length(okabe_ito)) {
+  scale_color_manual(values = okabe_ito)
+} else {
+  scale_color_viridis_d(option = &quot;C&quot;, end = 0.95)
+}
+
+# ---- Plot: Paired slopes VEH → DOX per individual ----
+p_slope &lt;- ggplot(df_long, aes(x = Tx, y = value, group = Ind, color = Ind)) +
+  geom_line(linewidth = 1.2, alpha = 0.9) +
+  geom_point(size = 3) +
+  facet_wrap(~ metric, scales = &quot;free_y&quot;, ncol = 3) +
+  scale_y_continuous(labels = label_number(big.mark = &quot;,&quot;)) +
+  col_scale +
+  labs(
+    title = &quot;Elbow cutoff TOP2B broad peaks (before dedup)&quot;,
+    x = NULL, y = NULL, color = &quot;Individual&quot;
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 10),
+    strip.text = element_text(face = &quot;bold&quot;)
+  )
+
+# ---- Show plot ----
+print(p_slope)</code></pre>
+<p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP2belbow-1.png" width="1344" style="display: block; margin: auto;" /></p>
+</div>
+<div id="elbow-cutoff-top2b-narrow-peaks-before-deduplication"
+class="section level2">
+<h2><strong>📌 Elbow cutoff TOP2B narrow peaks (before
+deduplication)</strong></h2>
+<pre class="r"><code>suppressPackageStartupMessages({
+  library(tidyverse)
+  library(readr)
+  library(scales)
+  library(stringr)
+})
+
+# ---- Load data ----
+df &lt;- read_csv(&quot;data/ELBOW_TOP2B_narrow.csv&quot;, show_col_types = FALSE)
+
+# ---- Harmonize column names (supports both naming schemes) ----
+if (&quot;Elbow_qscore&quot; %in% names(df)) df &lt;- df %&gt;% rename(Elbow_cutoff_Qscore = Elbow_qscore)
+if (&quot;NPeaks_at_elbow&quot; %in% names(df)) df &lt;- df %&gt;% rename(NPeaks_at_cutoff = NPeaks_at_elbow)
+if (&quot;LPeaks_at_elbow&quot; %in% names(df)) df &lt;- df %&gt;% rename(LPeaks_at_cutoff = LPeaks_at_elbow)
+
+# ---- Ensure numeric + derive Individual ID and ordered Tx ----
+num_cols &lt;- c(&quot;Elbow_cutoff_Qscore&quot;, &quot;NPeaks_at_cutoff&quot;, &quot;LPeaks_at_cutoff&quot;)
+df &lt;- df %&gt;% mutate(across(all_of(num_cols), as.numeric))
+
+# Robust &#39;Ind&#39; derivation
+if (&quot;Ind_ab&quot; %in% names(df)) {
+  df &lt;- df %&gt;% mutate(Ind = str_extract(Ind_ab, &quot;^Ind\\d+&quot;))
+} else if (&quot;Sample Det&quot; %in% names(df)) {
+  df &lt;- df %&gt;% mutate(Ind = str_extract(`Sample Det`, &quot;^Ind\\d+&quot;))
+} else {
+  df &lt;- df %&gt;% mutate(Ind = Sample)
+}
+
+# Order Tx: VEH → DOX (handle both Tx or Treatment columns)
+if (&quot;Tx&quot; %in% names(df)) {
+  df &lt;- df %&gt;% mutate(Tx = factor(Tx, levels = c(&quot;VEH&quot;,&quot;DOX&quot;)))
+} else if (&quot;Treatment&quot; %in% names(df)) {
+  df &lt;- df %&gt;% mutate(Tx = factor(Treatment, levels = c(&quot;VEH_TOP2B&quot;,&quot;DOX_TOP2B&quot;)))
+}
+
+# ---- Long format for plotting ----
+df_long &lt;- df %&gt;%
+  select(Sample, Ind, Tx, Elbow_cutoff_Qscore, NPeaks_at_cutoff, LPeaks_at_cutoff) %&gt;%
+  pivot_longer(
+    cols = c(NPeaks_at_cutoff, LPeaks_at_cutoff, Elbow_cutoff_Qscore),
+    names_to = &quot;metric&quot;, values_to = &quot;value&quot;
+  ) %&gt;%
+  mutate(metric = recode(
+    metric,
+    NPeaks_at_cutoff     = &quot;NPeaks at elbow&quot;,
+    LPeaks_at_cutoff     = &quot;LPeaks at elbow (bp)&quot;,
+    Elbow_cutoff_Qscore  = &quot;Elbow cutoff (−log10 q)&quot;
+  ))
+
+# ---- Color palette (Okabe–Ito up to 8 individuals, else viridis) ----
+okabe_ito &lt;- c(&quot;#E69F00&quot;,&quot;#56B4E9&quot;,&quot;#009E73&quot;,&quot;#F0E442&quot;,&quot;#0072B2&quot;,&quot;#D55E00&quot;,&quot;#CC79A7&quot;,&quot;#999999&quot;)
+n_ind &lt;- df %&gt;% distinct(Ind) %&gt;% nrow()
+col_scale &lt;- if (n_ind &lt;= length(okabe_ito)) {
+  scale_color_manual(values = okabe_ito)
+} else {
+  scale_color_viridis_d(option = &quot;C&quot;, end = 0.95)
+}
+
+# ---- Plot: Paired slopes VEH → DOX per individual ----
+p_slope &lt;- ggplot(df_long, aes(x = Tx, y = value, group = Ind, color = Ind)) +
+  geom_line(linewidth = 1.2, alpha = 0.9) +
+  geom_point(size = 3) +
+  facet_wrap(~ metric, scales = &quot;free_y&quot;, ncol = 3) +
+  scale_y_continuous(labels = label_number(big.mark = &quot;,&quot;)) +
+  col_scale +
+  labs(
+    title = &quot;Elbow cutoff TOP2B narrow peaks (before dedup)&quot;,
+    x = NULL, y = NULL, color = &quot;Individual&quot;
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 10),
+    strip.text = element_text(face = &quot;bold&quot;)
+  )
+
+print(p_slope)</code></pre>
+<p><img src="figure/Peak_Calling_cutoff_TOP2B_P53.Rmd/TOP2B_narrow-1.png" width="1344" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

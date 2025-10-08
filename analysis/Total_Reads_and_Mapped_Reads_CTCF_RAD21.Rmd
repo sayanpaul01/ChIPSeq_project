@@ -976,6 +976,9 @@ ggplot(map_long, aes(x = Ind, y = Reads, fill = Metric)) +
 
 ## **📌 Comparison of VEH and DOX reads across ChIP and Input samples**
 ```{r dedup5, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=14}
+# ============================================================
+# 📊 Comparison of VEH and DOX read metrics across ChIP/Input samples
+# ============================================================
 
 library(dplyr)
 library(tidyr)
@@ -989,7 +992,6 @@ map <- map %>%
     Mapped.Reads                               = as.numeric(Mapped.Reads),
     Reads.after.deduplication                  = as.numeric(Reads.after.deduplication),
     Uniquely.mapped.reads.before.deduplication = as.numeric(Uniquely.mapped.reads.before.deduplication),
-    Nuclear.reads.before.dedup                 = as.numeric(Nuclear.reads.before.dedup),
     Uniquely.mapped.reads.after.deduplication  = as.numeric(Uniquely.mapped.reads.after.deduplication)
   )
 
@@ -999,7 +1001,6 @@ metric_order <- c(
   "Mapped.Reads",
   "Reads.after.deduplication",
   "Uniquely.mapped.reads.before.deduplication",
-  "Nuclear.reads.before.dedup",
   "Uniquely.mapped.reads.after.deduplication"
 )
 
@@ -1008,7 +1009,6 @@ metric_labels <- c(
   "Mapped.Reads"                               = "mapped_reads",
   "Reads.after.deduplication"                  = "dedup_reads",
   "Uniquely.mapped.reads.before.deduplication" = "unique_pre_dedup",
-  "Nuclear.reads.before.dedup"                 = "nuclear_pre_dedup",
   "Uniquely.mapped.reads.after.deduplication"  = "unique_post_dedup"
 )
 
@@ -1024,11 +1024,12 @@ long5 <- map %>%
     Ind    = factor(Ind, levels = sort(unique(Ind))),
     Tx     = ifelse(grepl("^VEH", Treatment), "VEH", "DOX"),
     Tx     = factor(Tx, levels = c("VEH", "DOX")),
-    # build clean facet names: e.g. VEH_TOP2B_ChIP
+    # Build clean facet names: e.g. VEH_TOP2B_ChIP
     Facet  = paste(Tx, gsub("VEH_|DOX_", "", Treatment), Type, sep = "_"),
     Facet  = factor(Facet, levels = unique(paste(Tx, gsub("VEH_|DOX_", "", Treatment), Type, sep = "_")))
   ) %>%
-  droplevels()
+  droplevels() %>%
+  mutate(Reads = ifelse(Reads < 0, 0, Reads))  # Clamp negatives to 0
 
 # ---- Colors ----
 Ind_palc <- c("#ffbe0b","#ff006e","#fb5607","#8338ec","#3a86ff","#4a4e69")
@@ -1044,7 +1045,11 @@ ggplot(long5, aes(x = Metric, y = Reads)) +
              size = 2, alpha = 0.9) +
   scale_color_manual(values = Ind_palc, name = "Ind") +
   scale_fill_manual(values = tx_cols, name = "Tx") +
-  scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)) +
+  scale_y_continuous(
+    labels = label_number(suffix = " M", scale = 1e-6),
+    expand = c(0, 0)
+  ) +
+  coord_cartesian(ylim = c(0, NA)) +  # Force y-axis start from 0
   facet_wrap(~Facet, scales = "free_y", ncol = 3) +
   labs(
     title = "Read metrics across treatments and sample types",
@@ -1055,7 +1060,8 @@ ggplot(long5, aes(x = Metric, y = Reads)) +
   theme(
     plot.title   = element_text(size = rel(1.5), hjust = 0.5),
     axis.text.x  = element_text(angle = 30, hjust = 1),
-    strip.text.x = element_text(face = "bold")
+    strip.text.x = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
   )
 ```
 
